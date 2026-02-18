@@ -13,3 +13,4 @@ architecture behavior of PC_ADD is
 begin
     PC_next <= std_logic_vector(unsigned(PC_cur) + 4);
 end behavior;
+
