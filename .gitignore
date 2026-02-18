@@ -1,0 +1,16 @@
+# Quartus
+db/
+incremental_db/
+output_files/
+*.qpf
+*.qsf
+*.sopcinfo
+*.rpt
+*.summary
+*.jdi
+*.sof
+*.pof
+*.flow.rpt
+*.smsg
+*.qws
+*.bak
