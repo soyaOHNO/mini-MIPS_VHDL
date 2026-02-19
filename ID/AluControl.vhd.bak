@@ -1,0 +1,28 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_signed.all;
+use IEEE.std_logic_arith.all;
+
+entity AluControl is port
+(
+	INST			: in std_logic_vector(31 downto 0);
+	ALUop0		: in std_logic;
+	ALUop1		: in std_logic;
+	ALUcontrol	: out std_logic_vector(3 downto 0)
+);
+end AluControl;
+
+architecture behavior of AluControl is
+begin
+
+	process(INST)
+	begin
+
+		ALUcontrol(0) <= ALUop1 and ((not INST(1)) and INST(0) or INST(3));
+		ALUcontrol(1) <= not (ALUop1 and INST(2));
+		ALUcontrol(2) <= ((not ALUop1) and ALUop0) or (ALUop1 and INST(1));
+		ALUcontrol(3) <= ALUop1 and INST(2) and INST(1);
+
+	end process;
+
+end behavior;

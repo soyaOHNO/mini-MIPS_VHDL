@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.std_logic_signed.all;
 use IEEE.std_logic_arith.all;
 
-entity if_id_reg is port
+entity IFstage is port
 (
 	P_CLK		: in std_logic;
    PC_if		: in std_logic_vector(31 downto 0);
@@ -11,9 +11,9 @@ entity if_id_reg is port
    PC_id		: out std_logic_vector(31 downto 0);
 	INST_id	: out std_logic_vector(31 downto 0)
 );
-end if_id_reg;
+end IFstage;
 
-architecture behavior of if_id_reg is
+architecture behavior of IFstage is
 begin
 	process(P_CLK)
 	begin
