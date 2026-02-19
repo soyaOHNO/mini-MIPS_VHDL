@@ -1,0 +1,13 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity ALU32 is
+    port(
+        A          : in  std_logic_vector(31 downto 0);
+        B          : in  std_logic_vector(31 downto 0);
+        AluControl : in  std_logic_vector(3 downto 0);
+        Result     : out std_logic_vector(31 downto 0);
+        Zero       : out std_logic;
+        Overflow   : out std_logic
+    );
+end ALU32;

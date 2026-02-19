@@ -1,0 +1,15 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity PC_ADD is port
+(
+   PC_cur  : in  std_logic_vector(31 downto 0);
+	PC_next : out std_logic_vector(31 downto 0)
+);
+end PC_ADD;
+
+architecture behavior of PC_ADD is
+begin
+    PC_next <= std_logic_vector(unsigned(PC_cur) + 4);
+end behavior;
