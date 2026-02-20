@@ -22,7 +22,7 @@ end RegFile32;
 architecture behavior of RegFile32 is 
 type reg_array is
 	array (0 to 31) of std_logic_vector(31 downto 0);
-signal regs : reg_array;
+signal regs : reg_array:= (others => (others => '0'));
 begin
 	process(CLK, P_CLK)
 	begin

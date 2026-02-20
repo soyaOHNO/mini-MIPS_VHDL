@@ -26,10 +26,5 @@ signal memory : mem_type := (
 );
 
 begin
-	process(CLK, P_CLK)
-	begin
-		if rising_edge(CLK) and (P_CLK = '1') then
-			INSTR <= memory(to_integer(unsigned(ADDR(9 downto 2))));
-		end if;
-	end process;
+	INSTR <= memory(to_integer(unsigned(ADDR(9 downto 2))));
 end behavior;

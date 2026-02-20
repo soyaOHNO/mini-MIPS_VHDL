@@ -11,7 +11,9 @@ entity s_MIPS is port
 	HEX0	: out std_logic_vector(6 downto 0);
 	HEX1	: out std_logic_vector(6 downto 0);
 	HEX2	: out std_logic_vector(6 downto 0);
-	HEX3	: out std_logic_vector(6 downto 0)
+	HEX3	: out std_logic_vector(6 downto 0);
+	HEX4	: out std_logic_vector(6 downto 0);
+	HEX5	: out std_logic_vector(6 downto 0)
 );
 end s_MIPS;
 
@@ -53,6 +55,8 @@ architecture behavior of s_MIPS is
 	signal DebugAddr	: std_logic_vector(4 downto 0);
 	signal DebugData	: std_logic_vector(31 downto 0);
 	signal Print		: std_logic_vector(15 downto 0);
+	signal Print_PC  : std_logic_vector(15 downto 0);
+	signal dummy_HEX : std_logic_vector(6 downto 0);
 
 	component PC port
 	(
@@ -139,11 +143,12 @@ architecture behavior of s_MIPS is
 
 	component DataMem port
 	(
-		P_CLK     : in  std_logic;
-		MemWrite  : in  std_logic;
-		Address   : in  std_logic_vector(31 downto 0);
-		WriteData : in  std_logic_vector(31 downto 0);
-		ReadData  : out std_logic_vector(31 downto 0)
+		CLK		: in std_logic;
+		P_CLK		: in std_logic;
+		MemWrite	: in std_logic;
+		Address	: in std_logic_vector(31 downto 0);
+		WriteData: in std_logic_vector(31 downto 0);
+		ReadData	: out std_logic_vector(31 downto 0)
 	);
 	end component;
 
@@ -153,7 +158,7 @@ begin
 	process(CLK)
 	begin
 		if (CLK'event and CLK = '1') then
-			key_sync1 <= KEY(0);
+			key_sync1 <= not KEY(0);
 			key_sync2 <= key_sync1;
 		end if;
 	end process;
@@ -162,7 +167,7 @@ begin
 	process(CLK)
 	begin
 		if rising_edge(CLK) then
-			rst_sync1 <= KEY(1);
+			rst_sync1 <= not KEY(1);
 			rst_sync2 <= rst_sync1;
 		end if;
 	end process;
@@ -180,7 +185,7 @@ begin
 	ALU_B <= PORT_B when AluSrc = '0' else EXPaddr;
 	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, Result => Result, Zero => Zero);
 	U_Branch			: Branch port map(BRANCHc => BRANCHc, INST26 => INST(26), ZERO => ZERO, BraCtrl => BraCtrl);
-	U_DataMem		: DataMem port map(P_CLK => P_CLK, MemWrite => MemWrite, Address => Result, WriteData => PORT_B, ReadData => ReadData);
+	U_DataMem		: DataMem port map(CLK => CLK, P_CLK => P_CLK, MemWrite => MemWrite, Address => Result, WriteData => PORT_B, ReadData => ReadData);
 	w_data <= Result when MemToReg = '0' else ReadData;
 	SHIFTaddr <= EXPaddr(29 downto 0) & "00";
 	PC_branch <= PC_next + SHIFTaddr;
@@ -191,5 +196,7 @@ begin
 	DebugAddr <= SW(4 downto 0);
 	Print <= DebugData(15 downto 0) when SW(5) = '0' else DebugData(31 downto 16);
 	U_DebugPrint : entity work.DebugPrint port map(Print => Print, HEX0  => HEX0, HEX1  => HEX1, HEX2  => HEX2,HEX3  => HEX3);
+	Print_PC <= x"00" & PC_cur(7 downto 0);
+	U_DebugPrint_PC : entity work.DebugPrint port map(Print => Print_PC, HEX0  => HEX4, HEX1  => HEX5, HEX2  => dummy_HEX, HEX3  => dummy_HEX);
 
 end behavior;
