@@ -12,5 +12,5 @@ end PC_add;
 
 architecture behavior of PC_add is
 begin
-    PC_next <= std_logic_vector(unsigned(PC_cur) + 4);
+    PC_next <= PC_cur + x"00000004";
 end behavior;
