@@ -14,14 +14,11 @@ end INST_mem;
 architecture behavior of INST_mem is
 type mem_type is array (0 to 255) of std_logic_vector(31 downto 0);
 signal memory : mem_type := (
-	0 => x"20080000",	--addi $t0, $zero, 0
-	1 => x"20090001",	--addi $t1, $zero, 1
-	2 => x"200A000B",	--addi $t2, $zero, 11 <- loop
-	3 => x"01094020",	--add  $t0, $t0, $t1
-	4 => x"21290001",	--addi $t1, $t1, 1
-	5 => x"112A0001",	--beq  $t1, $t2, end
-	6 => x"08000003",	--j    loop
-	7 => x"08000007",	--j end <- end
+	0 => x"20080001",   -- addi $t0,$zero,1
+	1 => x"00084900",   -- sll  $t1,$t0,4
+	2 => x"0C000004",   -- jal FUNC (アドレス4)
+	3 => x"200A0063",   -- addi $t2,$zero,99
+	4 => x"200B0007",   -- addi $t3,$zero,7
 	others => (others => '0')
 );
 

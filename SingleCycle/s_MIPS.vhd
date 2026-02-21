@@ -29,12 +29,12 @@ architecture behavior of s_MIPS is
 	signal PC_cur		: std_logic_vector(31 downto 0);
 	signal PC_next		: std_logic_vector(31 downto 0);
 	signal INST			: std_logic_vector(31 downto 0);
-	signal RegDst		: std_logic;
+	signal RegDst		: std_logic_vector(1 downto 0);
 	signal RegWrite	: std_logic;
 	signal ALUop		: std_logic_vector(1 downto 0);
 	signal AluSrc		: std_logic;
 	signal MemWrite	: std_logic;
-	signal MemToReg	: std_logic;
+	signal MemToReg	: std_logic_vector(1 downto 0);
 	signal JUMP			: std_logic;
 	signal BRANCHc		: std_logic;
 	signal PORT_A		: std_logic_vector(31 downto 0);
@@ -87,12 +87,12 @@ architecture behavior of s_MIPS is
 	component ControlUnit port
 	(
 		OPECODE	: in std_logic_vector(5 downto 0);
-		RegDst	: out std_logic;
+		RegDst	: out std_logic_vector(1 downto 0);
 		RegWrite	: out std_logic;
 		ALUop		: out std_logic_vector(1 downto 0);
 		AluSrc	: out std_logic;
 		MemWrite	: out std_logic;
-		MemToReg	: out std_logic;
+		MemToReg	: out std_logic_vector(1 downto 0);
 		JUMP		: out std_logic;
 		BRANCH	: out std_logic
 	);
@@ -127,6 +127,7 @@ architecture behavior of s_MIPS is
 		A				: in std_logic_vector(31 downto 0);
 		B				: in std_logic_vector(31 downto 0);
 		AluControl	: in std_logic_vector(3 downto 0);
+		shamt			: in std_logic_vector(4 downto 0);
 		Result		: out std_logic_vector(31 downto 0);
 		Zero			: out std_logic
 	);
@@ -177,16 +178,16 @@ begin
 	U_PC_add			: PC_add port map(PC_cur => PC_cur, PC_next => PC_next);
 	U_INST_mem		: INST_mem port map(CLK => CLK, P_CLK => P_CLK, ADDR => PC_cur, INSTR => INST);
 	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc);
-	w_addr <= INST(20 downto 16) when RegDst = '0' else INST(15 downto 11);
+	with RegDst select w_addr <= INST(20 downto 16) when "00", INST(15 downto 11) when "01", "11111" when "10", (others => '0') when others;
 	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => RegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
 	U_AluControl	: AluControl port map(INST => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
 	EXPaddr(15 downto 0) <= INST(15 downto 0);
 	EXPaddr(31 downto 16) <= (others => INST(15));
 	ALU_B <= PORT_B when AluSrc = '0' else EXPaddr;
-	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, Result => Result, Zero => Zero);
+	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, shamt => INST(10 downto 6), Result => Result, Zero => Zero);
 	U_Branch			: Branch port map(BRANCHc => BRANCHc, INST26 => INST(26), ZERO => ZERO, BraCtrl => BraCtrl);
 	U_DataMem		: DataMem port map(CLK => CLK, P_CLK => P_CLK, MemWrite => MemWrite, Address => Result, WriteData => PORT_B, ReadData => ReadData);
-	w_data <= Result when MemToReg = '0' else ReadData;
+	with MemToReg select w_data <= Result when "00", ReadData when "01", PC_next when "10", (others => '0') when others;
 	SHIFTaddr <= EXPaddr(29 downto 0) & "00";
 	PC_branch <= PC_next + SHIFTaddr;
 	PC_jb <= PC_next when BraCtrl = '0' else PC_branch;

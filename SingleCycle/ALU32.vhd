@@ -7,6 +7,7 @@ entity ALU32 is port
 	A				: in std_logic_vector(31 downto 0);
 	B				: in std_logic_vector(31 downto 0);
 	AluControl	: in std_logic_vector(3 downto 0);
+	shamt			: in std_logic_vector(4 downto 0);
 	Result		: out std_logic_vector(31 downto 0);
 	Zero			: out std_logic
 );
@@ -22,8 +23,8 @@ architecture structural of ALU32 is
 
 begin
 
-	shift_result <= std_logic_vector(shift_left(unsigned(A), to_integer(unsigned(B(4 downto 0))))) when AluControl = "1000" 
-					else std_logic_vector(shift_right(unsigned(A), to_integer(unsigned(B(4 downto 0))))) when AluControl = "1001" 
+	shift_result <= std_logic_vector(shift_left(unsigned(B), to_integer(unsigned(shamt)))) when AluControl = "1000" 
+					else std_logic_vector(shift_right(unsigned(B), to_integer(unsigned(shamt)))) when AluControl = "1001" 
 					else (others => '0');
 
 	carry(0) <= AluControl(2);
