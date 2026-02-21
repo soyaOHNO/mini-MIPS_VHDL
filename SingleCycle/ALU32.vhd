@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
 
 entity ALU32 is port
 (
@@ -15,10 +16,15 @@ architecture structural of ALU32 is
 
 	signal carry			: std_logic_vector(32 downto 0);
 	signal set_msb			: std_logic;
-	signal overflow_sig	: std_logic;
 	signal b_Result		: std_logic_vector(31 downto 0);
+	signal shift_result : std_logic_vector(31 downto 0);
+	signal final_result : std_logic_vector(31 downto 0);
 
 begin
+
+	shift_result <= std_logic_vector(shift_left(unsigned(A), to_integer(unsigned(B(4 downto 0))))) when AluControl = "1000" 
+					else std_logic_vector(shift_right(unsigned(A), to_integer(unsigned(B(4 downto 0))))) when AluControl = "1001" 
+					else (others => '0');
 
 	carry(0) <= AluControl(2);
 
@@ -69,7 +75,8 @@ begin
 
 	end generate;
 
-	Result <= b_Result;
-	Zero <= '1' when b_Result = x"00000000" else '0';
+	final_result <= shift_result when (AluControl = "1000" or AluControl = "1001") else b_Result;
+	Result <= final_result;
+	Zero <= '1' when final_Result = x"00000000" else '0';
 
 end structural;
