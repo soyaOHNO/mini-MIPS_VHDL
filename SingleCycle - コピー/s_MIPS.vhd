@@ -37,7 +37,6 @@ architecture behavior of s_MIPS is
 	signal MemToReg	: std_logic_vector(1 downto 0);
 	signal JUMP			: std_logic;
 	signal BRANCHc		: std_logic;
-	signal JRc			: std_logic;
 	signal PORT_A		: std_logic_vector(31 downto 0);
 	signal PORT_B		: std_logic_vector(31 downto 0);
 	signal w_addr		: std_logic_vector(4 downto 0);
@@ -53,7 +52,6 @@ architecture behavior of s_MIPS is
 	signal PC_branch	: std_logic_vector(31 downto 0);
 	signal PC_jump		: std_logic_vector(31 downto 0);
 	signal PC_jb		: std_logic_vector(31 downto 0);
-	signal PC_jr		: std_logic_vector(31 downto 0);
 	signal DebugAddr	: std_logic_vector(4 downto 0);
 	signal DebugData	: std_logic_vector(31 downto 0);
 	signal Print		: std_logic_vector(15 downto 0);
@@ -89,7 +87,6 @@ architecture behavior of s_MIPS is
 	component ControlUnit port
 	(
 		OPECODE	: in std_logic_vector(5 downto 0);
-		FUNCT		: in std_logic_vector(5 downto 0);
 		RegDst	: out std_logic_vector(1 downto 0);
 		RegWrite	: out std_logic;
 		ALUop		: out std_logic_vector(1 downto 0);
@@ -97,8 +94,7 @@ architecture behavior of s_MIPS is
 		MemWrite	: out std_logic;
 		MemToReg	: out std_logic_vector(1 downto 0);
 		JUMP		: out std_logic;
-		BRANCH	: out std_logic;
-		JR			: out std_logic
+		BRANCH	: out std_logic
 	);
 	end component;
 
@@ -181,7 +177,7 @@ begin
 	U_PC				: PC port map(CLK => CLK, RST => RST, P_CLK => P_CLK, PC_in => PC_in, PC_out => PC_cur);
 	U_PC_add			: PC_add port map(PC_cur => PC_cur, PC_next => PC_next);
 	U_INST_mem		: INST_mem port map(CLK => CLK, P_CLK => P_CLK, ADDR => PC_cur, INSTR => INST);
-	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc);
+	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc);
 	with RegDst select w_addr <= INST(20 downto 16) when "00", INST(15 downto 11) when "01", "11111" when "10", (others => '0') when others;
 	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => RegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
 	U_AluControl	: AluControl port map(INST => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
@@ -196,8 +192,7 @@ begin
 	PC_branch <= PC_next + SHIFTaddr;
 	PC_jb <= PC_next when BraCtrl = '0' else PC_branch;
 	PC_jump <= PC_next(31 downto 28) & INST(25 downto 0) & "00";
-	PC_jr <= PC_jb when JUMP = '0' else PC_jump;
-	PC_in <= PC_jr when JRc = '0' else PORT_A;
+	PC_in <= PC_jb when JUMP = '0' else PC_jump;
 
 	DebugAddr <= SW(4 downto 0);
 	Print <= DebugData(15 downto 0) when SW(5) = '0' else DebugData(31 downto 16);

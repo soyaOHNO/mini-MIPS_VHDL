@@ -4,7 +4,6 @@ use IEEE.std_logic_1164.all;
 entity ControlUnit is port
 (
 	OPECODE	: in std_logic_vector(5 downto 0);
-	FUNCT		: in std_logic_vector(5 downto 0);
 	RegDst	: out std_logic_vector(1 downto 0);
 	RegWrite	: out std_logic;
 	ALUop		: out std_logic_vector(1 downto 0);
@@ -12,8 +11,7 @@ entity ControlUnit is port
 	MemWrite	: out std_logic;
 	MemToReg	: out std_logic_vector(1 downto 0);
 	JUMP		: out std_logic;
-	BRANCH	: out std_logic;
-	JR			: out std_logic
+	BRANCH	: out std_logic
 );
 end ControlUnit;
 
@@ -30,18 +28,12 @@ begin
 		MemToReg <= "00";
 		JUMP     <= '0';
 		BRANCH   <= '0';
-		JR			<= '0';
 
 		case OPECODE is
 			when "000000" =>   -- R
-				case FUNCT is
-					when "001000" =>
-						JR <= '1';
-					when others =>
-						RegDst   <= "01";
-						RegWrite <= '1';
-						ALUop    <= "10";
-				end case;
+				RegDst   <= "01";
+				RegWrite <= '1';
+				ALUop    <= "10";
 
 			when "100011" =>   -- lw
 				RegWrite <= '1';

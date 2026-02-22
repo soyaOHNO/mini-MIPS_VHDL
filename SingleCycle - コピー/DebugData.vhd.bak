@@ -1,0 +1,89 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity DebugData is port 
+( 
+	Print	: in std_logic_vector(15 downto 0)
+);
+end DebugData;
+
+architecture behavior of DebugData is
+begin
+	process(Print)
+	begin
+		case sum0 is
+			when 1 => HEX0 <= "1111001";
+			when 2 => HEX0 <= "0100100";
+			when 3 => HEX0 <= "0110000";
+			when 4 => HEX0 <= "0011001";
+			when 5 => HEX0 <= "0010010";
+			when 6 => HEX0 <= "0000010";
+			when 7 => HEX0 <= "1011000";
+			when 8 => HEX0 <= "0000000";
+			when 9 => HEX0 <= "0010000";
+			when others => HEX0 <= "1000000";
+		end case;
+	end process;
+	process(sum1)
+	begin
+		case sum1 is
+			when 1 => HEX1 <= "1111001";
+			when 2 => HEX1 <= "0100100";
+			when 3 => HEX1 <= "0110000";
+			when 4 => HEX1 <= "0011001";
+			when 5 => HEX1 <= "0010010";
+			when others => HEX1 <= "1000000";
+		end case;
+	end process;
+	process(sum2)
+	begin
+		case sum2 is
+			when 1 => HEX2 <= "1111001";
+			when 2 => HEX2 <= "0100100";
+			when 3 => HEX2 <= "0110000";
+			when 4 => HEX2 <= "0011001";
+			when 5 => HEX2 <= "0010010";
+			when 6 => HEX2 <= "0000010";
+			when 7 => HEX2 <= "1011000";
+			when 8 => HEX2 <= "0000000";
+			when 9 => HEX2 <= "0010000";
+			when others => HEX2 <= "1000000";
+		end case;
+	end process;
+	process(sum3)
+	begin
+		case sum3 is
+			when 1 => HEX3 <= "1111001";
+			when 2 => HEX3 <= "0100100";
+			when 3 => HEX3 <= "0110000";
+			when 4 => HEX3 <= "0011001";
+			when 5 => HEX3 <= "0010010";
+			when others => HEX3 <= "1000000";
+		end case;
+	end process;
+	process(sum4)
+	begin
+		case sum4 is
+			when 1 => HEX4 <= "1111001";
+			when 2 => HEX4 <= "0100100";
+			when 3 => HEX4 <= "0110000";
+			when 4 => HEX4 <= "0011001";
+			when 5 => HEX4 <= "0010010";
+			when 6 => HEX4 <= "0000010";
+			when 7 => HEX4 <= "1011000";
+			when 8 => HEX4 <= "0000000";
+			when 9 => HEX4 <= "0010000";
+			when others => HEX4 <= "1000000";
+		end case;
+	end process;
+	process(sum5)
+	begin
+		case sum5 is
+			when 1 => HEX5 <= "1111001";
+			when 2 => HEX5 <= "0100100";
+			when others => HEX5 <= "1000000";
+		end case;
+	end process;
+	
+	LEDR(5 downto 0) <= c;
+end behavior;
