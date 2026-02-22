@@ -13,7 +13,11 @@ entity ControlUnit is port
 	MemToReg	: out std_logic_vector(1 downto 0);
 	JUMP		: out std_logic;
 	BRANCH	: out std_logic;
-	JR			: out std_logic
+	JR			: out std_logic;
+	MULT		: out std_logic;
+	DIV		: out std_logic;
+	HI			: out std_logic;
+	LO			: out std_logic
 );
 end ControlUnit;
 
@@ -31,12 +35,28 @@ begin
 		JUMP     <= '0';
 		BRANCH   <= '0';
 		JR			<= '0';
+		MULT		<= '0';
+		DIV		<= '0';
+		HI			<= '0';
+		LO			<= '0';
 
 		case OPECODE is
 			when "000000" =>   -- R
 				case FUNCT is
 					when "001000" =>
 						JR <= '1';
+					when "011000" =>
+						MULT <= '1';
+					when "011010" =>
+						DIV <= '1';
+					when "010000" =>
+						HI			<= '1';
+						RegDst	<= "01";
+						RegWrite	<= '1';
+					when "010010" =>
+						LO			<= '1';
+						RegDst	<= "01";
+						RegWrite	<= '1';
 					when others =>
 						RegDst   <= "01";
 						RegWrite <= '1';

@@ -41,6 +41,7 @@ architecture behavior of s_MIPS is
 	signal PORT_A		: std_logic_vector(31 downto 0);
 	signal PORT_B		: std_logic_vector(31 downto 0);
 	signal w_addr		: std_logic_vector(4 downto 0);
+	signal m_data		: std_logic_vector(31 downto 0);
 	signal w_data		: std_logic_vector(31 downto 0);
 	signal ALUcontrols: std_logic_vector(3 downto 0);
 	signal EXPaddr		: std_logic_vector(31 downto 0);
@@ -54,6 +55,15 @@ architecture behavior of s_MIPS is
 	signal PC_jump		: std_logic_vector(31 downto 0);
 	signal PC_jb		: std_logic_vector(31 downto 0);
 	signal PC_jr		: std_logic_vector(31 downto 0);
+	signal MULT			: std_logic;
+	signal DIV			: std_logic;
+	signal HI			: std_logic;
+	signal LO			: std_logic;
+	signal MF			: std_logic;
+	signal HI_out		: std_logic_vector(31 downto 0);
+	signal LO_out		: std_logic_vector(31 downto 0);
+	signal MF_out		: std_logic_vector(31 downto 0);
+
 	signal DebugAddr	: std_logic_vector(4 downto 0);
 	signal DebugData	: std_logic_vector(31 downto 0);
 	signal Print		: std_logic_vector(15 downto 0);
@@ -98,7 +108,11 @@ architecture behavior of s_MIPS is
 		MemToReg	: out std_logic_vector(1 downto 0);
 		JUMP		: out std_logic;
 		BRANCH	: out std_logic;
-		JR			: out std_logic
+		JR			: out std_logic;
+		MULT		: out std_logic;
+		DIV		: out std_logic;
+		HI			: out std_logic;
+		LO			: out std_logic
 	);
 	end component;
 
@@ -157,6 +171,30 @@ architecture behavior of s_MIPS is
 	);
 	end component;
 
+	component CALC_MUDI port
+	(
+		A			: in std_logic_vector(31 downto 0);
+		B			: in std_logic_vector(31 downto 0);
+		MULT		: in std_logic;
+		DIV		: in std_logic;
+		HI_out	: out std_logic_vector(31 downto 0);
+		LO_out	: out std_logic_vector(31 downto 0)
+	);
+	end component;
+
+	component HILO_Reg is port
+	(
+		P_CLK		: in std_logic;
+		A			: in std_logic_vector(31 downto 0);
+		B			: in std_logic_vector(31 downto 0);
+		MULT		: in std_logic;
+		DIV		: in std_logic;
+		HI			: in std_logic;
+		LO			: in std_logic;
+		MF_out	: out std_logic_vector(31 downto 0)
+	);
+	end component;
+
 
 begin
 
@@ -181,17 +219,21 @@ begin
 	U_PC				: PC port map(CLK => CLK, RST => RST, P_CLK => P_CLK, PC_in => PC_in, PC_out => PC_cur);
 	U_PC_add			: PC_add port map(PC_cur => PC_cur, PC_next => PC_next);
 	U_INST_mem		: INST_mem port map(CLK => CLK, P_CLK => P_CLK, ADDR => PC_cur, INSTR => INST);
-	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc);
+	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc, MULT => MULT, DIV => DIV, HI => HI, LO => LO);
 	with RegDst select w_addr <= INST(20 downto 16) when "00", INST(15 downto 11) when "01", "11111" when "10", (others => '0') when others;
 	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => RegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
 	U_AluControl	: AluControl port map(INST => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
 	EXPaddr(15 downto 0) <= INST(15 downto 0);
 	EXPaddr(31 downto 16) <= (others => INST(15));
 	ALU_B <= PORT_B when AluSrc = '0' else EXPaddr;
+	U_CALC_MUDI		: CALC_MUDI port map(A => PORT_A, B => ALU_B, MULT => MULT, DIV => DIV, HI_out => HI_out, LO_out => LO_out);
+	U_HILO_Reg		: HILO_Reg port map(P_CLK => P_CLK, A => HI_out, B => LO_out, MULT => MULT, DIV => DIV, HI => HI, LO => LO, MF_out => MF_out);
 	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, shamt => INST(10 downto 6), Result => Result, Zero => Zero);
 	U_Branch			: Branch port map(BRANCHc => BRANCHc, INST26 => INST(26), ZERO => ZERO, BraCtrl => BraCtrl);
 	U_DataMem		: DataMem port map(CLK => CLK, P_CLK => P_CLK, MemWrite => MemWrite, Address => Result, WriteData => PORT_B, ReadData => ReadData);
-	with MemToReg select w_data <= Result when "00", ReadData when "01", PC_next when "10", (others => '0') when others;
+	with MemToReg select m_data <= Result when "00", ReadData when "01", PC_next when "10", (others => '0') when others;
+	MF <= HI or LO;
+	with MF select w_data <= m_data when '0', MF_out when '1', (others => '0') when others;
 	SHIFTaddr <= EXPaddr(29 downto 0) & "00";
 	PC_branch <= PC_next + SHIFTaddr;
 	PC_jb <= PC_next when BraCtrl = '0' else PC_branch;
