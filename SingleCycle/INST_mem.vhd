@@ -14,10 +14,14 @@ end INST_mem;
 architecture behavior of INST_mem is
 type mem_type is array (0 to 255) of std_logic_vector(31 downto 0);
 signal memory : mem_type := (
-	0 => x"3C081234",   -- lui  $t0, 0x1234        # → 0x12340000
-	1 => x"3C09ABCD",   -- lui  $t1, 0xABCD
-	2 => x"35295678",   -- ori  $t1, $t1, 0x5678   # → 0xABCD5678
-	3 => x"340AFFFF",   -- ori  $t2, $zero, 0xFFFF # → 0x0000FFFF（符号拡張されないこと確認）
+	0 => x"2008FFFF",   -- addi $t0, $zero, -1      # 0xFFFFFFFF
+	1 => x"20090001",   -- addi $t1, $zero, 1
+	2 => x"0109502A",   -- slt  $t2, $t0, $t1      # signed  → 1
+	3 => x"0109582B",   -- sltu $t3, $t0, $t1      # unsigned→ 0
+	4 => x"2008AAAA",   -- addi $t0, $zero, 0xAAAA
+	5 => x"3909FFFF",   -- xori $t1, $t0, 0xFFFF   # → 0x00005555
+	6 => x"30080005",   -- subi $t0, $zero, 5      # → 0xFFFFFFFB
+
 	others => (others => '0')
 );
 

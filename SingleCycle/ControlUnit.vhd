@@ -86,6 +86,12 @@ begin
 				ALUop    <= "11";
 				ImmSrc	<= '1';
 
+			when "001110" =>   -- XORI
+				RegWrite <= '1';
+				ALUSrc   <= '1';
+				ALUop    <= "11";
+				ImmSrc	<= '1';
+
 			when "000100" =>   -- beq
 				BRANCH   <= '1';
 				ALUop    <= "01";

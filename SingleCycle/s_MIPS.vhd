@@ -139,7 +139,8 @@ architecture behavior of s_MIPS is
 
 	component AluControl port
 	(
-		INST			: in std_logic_vector(5 downto 0);
+		OPECODE		: in std_logic_vector(5 downto 0);
+		FUNCT			: in std_logic_vector(5 downto 0);
 		ALUop			: in std_logic_vector(1 downto 0);
 		ALUcontrols	: out std_logic_vector(3 downto 0)
 	);
@@ -227,7 +228,7 @@ begin
 	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc, MULT => MULT, DIV => DIV, HI => HI, LO => LO, LUI => LUI, ImmSrc => ImmSrc);
 	with RegDst select w_addr <= INST(20 downto 16) when "00", INST(15 downto 11) when "01", "11111" when "10", (others => '0') when others;
 	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => RegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
-	U_AluControl	: AluControl port map(INST => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
+	U_AluControl	: AluControl port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
 	process(INST, ImmSrc)
 	begin
 		if ImmSrc = '0' then
