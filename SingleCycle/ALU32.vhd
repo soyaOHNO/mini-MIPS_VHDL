@@ -19,6 +19,7 @@ architecture structural of ALU32 is
 	signal set_msb			: std_logic;
 	signal b_Result		: std_logic_vector(31 downto 0);
 	signal shift_result	: std_logic_vector(31 downto 0);
+	signal sra_result		: std_logic_vector(31 downto 0);
 	signal xor_result		: std_logic_vector(31 downto 0);
 	signal sltu_result	: std_logic_vector(31 downto 0);
 	signal final_result	: std_logic_vector(31 downto 0);
@@ -28,6 +29,7 @@ begin
 	shift_result <= std_logic_vector(shift_left(unsigned(B), to_integer(unsigned(shamt)))) when AluControl = "1000" 
 					else std_logic_vector(shift_right(unsigned(B), to_integer(unsigned(shamt)))) when AluControl = "1001" 
 					else (others => '0');
+	sra_result <= std_logic_vector(shift_right(signed(B), to_integer(unsigned(shamt))));
 	xor_result <= A xor B;
 	sltu_result <= x"00000001" when unsigned(A) < unsigned(B) else x"00000000";
 
@@ -81,7 +83,8 @@ begin
 	end generate;
 
 	with AluControl select final_result <= shift_result when "1000", 
-														shift_result when "1001", 
+														shift_result when "1001",
+														sra_result when "1011",
 														xor_result when "0011",
 														sltu_result when "1010",
 														b_Result when others;

@@ -19,7 +19,8 @@ entity ControlUnit is port
 	HI			: out std_logic;
 	LO			: out std_logic;
 	LUI		: out std_logic;
-	ImmSrc	: out std_logic
+	ImmSrc	: out std_logic;
+	UnSign	: out std_logic
 );
 end ControlUnit;
 
@@ -43,16 +44,23 @@ begin
 		LO			<= '0';
 		LUI		<= '0';
 		ImmSrc	<= '0';
+		UnSign	<= '0';
 
 		case OPECODE is
 			when "000000" =>   -- R
 				case FUNCT is
-					when "001000" =>
+					when "001000" =>   -- jr
 						JR <= '1';
-					when "011000" =>
+					when "011000" =>   -- mult
 						MULT <= '1';
-					when "011010" =>
+					when "011001" =>   -- multu
+						MULT <= '1';
+						UnSign <= '1';
+					when "011010" =>   -- div
 						DIV <= '1';
+					when "011011" =>   -- divu
+						DIV <= '1';
+						UnSign <= '1';
 					when "010000" =>
 						HI			<= '1';
 						RegDst	<= "01";
@@ -80,6 +88,12 @@ begin
 				RegWrite <= '1';
 				LUI      <= '1';
 
+			when "001100" =>   -- ANDI
+				RegWrite <= '1';
+				ALUSrc   <= '1';
+				ALUop    <= "11";
+				ImmSrc   <= '1';
+
 			when "001101" =>   -- ORI
 				RegWrite <= '1';
 				ALUSrc   <= '1';
@@ -91,6 +105,16 @@ begin
 				ALUSrc   <= '1';
 				ALUop    <= "11";
 				ImmSrc	<= '1';
+
+			when "001010" =>   -- slti
+				RegWrite <= '1';
+				ALUSrc   <= '1';
+				ALUop    <= "11";
+
+			when "001011" =>   -- sltiu
+				RegWrite <= '1';
+				ALUSrc   <= '1';
+				ALUop    <= "11";
 
 			when "000100" =>   -- beq
 				BRANCH   <= '1';

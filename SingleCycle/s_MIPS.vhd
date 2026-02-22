@@ -66,6 +66,7 @@ architecture behavior of s_MIPS is
 	signal MF_out		: std_logic_vector(31 downto 0);
 	signal LUI			: std_logic;
 	signal ImmSrc		: std_logic;
+	signal UnSign		: std_logic;
 
 	signal DebugAddr	: std_logic_vector(4 downto 0);
 	signal DebugData	: std_logic_vector(31 downto 0);
@@ -117,7 +118,8 @@ architecture behavior of s_MIPS is
 		HI			: out std_logic;
 		LO			: out std_logic;
 		LUI		: out std_logic;
-		ImmSrc	: out std_logic
+		ImmSrc	: out std_logic;
+		UnSign	: out std_logic
 	);
 	end component;
 
@@ -183,6 +185,7 @@ architecture behavior of s_MIPS is
 		B			: in std_logic_vector(31 downto 0);
 		MULT		: in std_logic;
 		DIV		: in std_logic;
+		UnSign	: in std_logic;
 		HI_out	: out std_logic_vector(31 downto 0);
 		LO_out	: out std_logic_vector(31 downto 0)
 	);
@@ -225,7 +228,7 @@ begin
 	U_PC				: PC port map(CLK => CLK, RST => RST, P_CLK => P_CLK, PC_in => PC_in, PC_out => PC_cur);
 	U_PC_add			: PC_add port map(PC_cur => PC_cur, PC_next => PC_next);
 	U_INST_mem		: INST_mem port map(CLK => CLK, P_CLK => P_CLK, ADDR => PC_cur, INSTR => INST);
-	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc, MULT => MULT, DIV => DIV, HI => HI, LO => LO, LUI => LUI, ImmSrc => ImmSrc);
+	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc, MULT => MULT, DIV => DIV, HI => HI, LO => LO, LUI => LUI, ImmSrc => ImmSrc, UnSign => UnSign);
 	with RegDst select w_addr <= INST(20 downto 16) when "00", INST(15 downto 11) when "01", "11111" when "10", (others => '0') when others;
 	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => RegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
 	U_AluControl	: AluControl port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
@@ -241,7 +244,7 @@ begin
 		end if;
 	end process;
 	ALU_B <= PORT_B when AluSrc = '0' else EXPaddr;
-	U_CALC_MUDI		: CALC_MUDI port map(A => PORT_A, B => ALU_B, MULT => MULT, DIV => DIV, HI_out => HI_out, LO_out => LO_out);
+	U_CALC_MUDI		: CALC_MUDI port map(A => PORT_A, B => ALU_B, MULT => MULT, DIV => DIV, UnSign => UnSign, HI_out => HI_out, LO_out => LO_out);
 	U_HILO_Reg		: HILO_Reg port map(P_CLK => P_CLK, A => HI_out, B => LO_out, MULT => MULT, DIV => DIV, HI => HI, LO => LO, MF_out => MF_out);
 	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, shamt => INST(10 downto 6), Result => Result, Zero => Zero);
 	U_Branch			: Branch port map(BRANCHc => BRANCHc, INST26 => INST(26), ZERO => ZERO, BraCtrl => BraCtrl);
