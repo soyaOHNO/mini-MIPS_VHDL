@@ -17,7 +17,9 @@ entity ControlUnit is port
 	MULT		: out std_logic;
 	DIV		: out std_logic;
 	HI			: out std_logic;
-	LO			: out std_logic
+	LO			: out std_logic;
+	LUI		: out std_logic;
+	ImmSrc	: out std_logic
 );
 end ControlUnit;
 
@@ -39,6 +41,8 @@ begin
 		DIV		<= '0';
 		HI			<= '0';
 		LO			<= '0';
+		LUI		<= '0';
+		ImmSrc	<= '0';
 
 		case OPECODE is
 			when "000000" =>   -- R
@@ -71,6 +75,16 @@ begin
 			when "101011" =>   -- sw
 				AluSrc   <= '1';
 				MemWrite <= '1';
+
+			when "001111" =>   -- LUI
+				RegWrite <= '1';
+				LUI      <= '1';
+
+			when "001101" =>   -- ORI
+				RegWrite <= '1';
+				ALUSrc   <= '1';
+				ALUop    <= "11";
+				ImmSrc	<= '1';
 
 			when "000100" =>   -- beq
 				BRANCH   <= '1';

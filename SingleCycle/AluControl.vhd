@@ -36,6 +36,9 @@ begin
 					when others   => ALUcontrols <= "0000";
 				end case;
 
+			when "11" =>  -- ori
+				ALUcontrols <= "0001";
+
 			when others =>
 				ALUcontrols <= "0000";
 		end case;
