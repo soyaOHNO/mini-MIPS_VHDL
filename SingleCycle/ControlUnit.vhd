@@ -28,7 +28,7 @@ end ControlUnit;
 architecture behavior of ControlUnit is
 begin
 
-	process(OPECODE)
+	process(OPECODE, FUNCT)
 	begin
 		RegDst   	<= "00";
 		RegWrite 	<= '0';
@@ -53,6 +53,11 @@ begin
 				case FUNCT is
 					when "001000" =>   -- jr
 						JR <= '1';
+					when "001001" =>   -- jalr
+						JR <= '1';
+						RegWrite <= '1';
+						MemToReg <= "10";
+						RegDst <= "01";
 					when "011000" =>   -- mult
 						MULT <= '1';
 						HiLoWrite <= '1';
