@@ -36,9 +36,12 @@ begin
 					when "100111" => ALUcontrols <= "01100"; -- nor
 					when "101010" => ALUcontrols <= "00111"; -- slt
 					when "101011" => ALUcontrols <= "11010"; -- sltu
-					when "000000" => ALUcontrols <= "01000"; -- sll
+					when "000000" => ALUcontrols <= "01010"; -- sll
+					when "000100" => ALUcontrols <= "01110"; -- sllv
 					when "000010" => ALUcontrols <= "01001"; -- srl
+					when "000110" => ALUcontrols <= "01101"; -- srlv
 					when "000011" => ALUcontrols <= "01011"; -- sra
+					when "000111" => ALUcontrols <= "01111"; -- srav
 					when others   => ALUcontrols <= "00000";
 				end case;
 
