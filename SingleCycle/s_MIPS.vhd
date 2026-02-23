@@ -281,7 +281,7 @@ begin
 	DebugAddr <= SW(4 downto 0);
 	Print <= DebugData(15 downto 0) when SW(5) = '0' else DebugData(31 downto 16);
 	U_DebugPrint : entity work.DebugPrint port map(Print => Print, Overflow => Overflow, ZeroDiv => ZeroDiv, HEX0  => HEX0, HEX1  => HEX1, HEX2  => HEX2,HEX3  => HEX3);
-	Print_PC <= x"00" & PC_cur(7 downto 0);
+	Print_PC <= x"00" & PC_cur(9 downto 2);
 	U_DebugPrint_PC : entity work.DebugPrint port map(Print => Print_PC, Overflow => '0', ZeroDiv => '0', HEX0  => HEX4, HEX1  => HEX5, HEX2  => dummy_HEX, HEX3  => dummy_HEX);
 
 end behavior;

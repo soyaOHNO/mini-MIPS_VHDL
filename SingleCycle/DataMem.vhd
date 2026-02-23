@@ -16,9 +16,9 @@ end DataMem;
 
 architecture behavior of DataMem is
 
-	type ram_type is array (0 to 31) of std_logic_vector(31 downto 0);
+	type ram_type is array (0 to 255) of std_logic_vector(31 downto 0);
 	signal RAM : ram_type := (others => (others => '0'));
-	signal addr_index : integer range 0 to 31;
+	signal addr_index : integer range 0 to 255;
 	
 	-- 読み出し用の中間シグナル
 	signal word_data : std_logic_vector(31 downto 0);
@@ -27,7 +27,7 @@ architecture behavior of DataMem is
 begin
 
 	-- アドレスの上位ビットからワード単位のインデックスを計算
-	addr_index <= to_integer(unsigned(Address(6 downto 2)));
+	addr_index <= to_integer(unsigned(Address(9 downto 2)));
 
 	-- 【書き込みプロセス (sw / sb)】
 	process(CLK)

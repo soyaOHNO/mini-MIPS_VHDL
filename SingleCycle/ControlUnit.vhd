@@ -74,14 +74,15 @@ begin
 						DIV <= '1';
 						HiLoWrite <= '1';
 						UnSign <= '1';
-					when "010000" =>
+					when "010000" =>   -- mfhi
 						HI			<= '1';
 						RegDst	<= "01";
 						RegWrite	<= '1';
-					when "010010" =>
+					when "010010" =>   -- mflo
 						LO			<= '1';
 						RegDst	<= "01";
 						RegWrite	<= '1';
+					when "001100" =>   -- syscall
 					when others =>
 						RegDst   <= "01";
 						RegWrite <= '1';

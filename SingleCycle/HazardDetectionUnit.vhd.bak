@@ -1,0 +1,12 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity HazardDetectionUnit is port 
+(
+);
+end HazardDetectionUnit;
+
+architecture behavior of HazardDetectionUnit is
+begin
+
+end behavior;
