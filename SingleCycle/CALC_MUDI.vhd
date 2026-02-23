@@ -10,7 +10,9 @@ entity CALC_MUDI is port
 	DIV		: in std_logic;
 	UnSign	: in std_logic;
 	HI_out	: out std_logic_vector(31 downto 0);
-	LO_out	: out std_logic_vector(31 downto 0)
+	LO_out	: out std_logic_vector(31 downto 0);
+	Overflow	: out std_logic;
+	ZeroDiv	: out std_logic
 );
 end CALC_MUDI;
 
@@ -20,6 +22,8 @@ begin
 		variable temp64  : signed(63 downto 0);
 		variable utemp64 : unsigned(63 downto 0);
 	begin
+		Overflow <= '0';
+		ZeroDiv <= '0';
 		HI_out <= (others => '0');
 		LO_out <= (others => '0');
 
@@ -33,6 +37,11 @@ begin
 				if signed(B) /= 0 then -- ゼロ除算対策
 					LO_out <= std_logic_vector(signed(A) / signed(B));
 					HI_out <= std_logic_vector(signed(A) mod signed(B));
+				else
+					ZeroDiv <= '1';
+				end if;
+				if (A = x"80000000" and B = x"FFFFFFFF") then
+					Overflow <= '1';
 				end if;
 			end if;
 			
@@ -46,6 +55,8 @@ begin
 				if unsigned(B) /= 0 then -- ゼロ除算対策
 					LO_out <= std_logic_vector(unsigned(A) / unsigned(B));
 					HI_out <= std_logic_vector(unsigned(A) mod unsigned(B));
+				else
+					ZeroDiv <= '1';
 				end if;
 			end if;
 		else

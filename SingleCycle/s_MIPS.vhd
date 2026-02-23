@@ -31,6 +31,7 @@ architecture behavior of s_MIPS is
 	signal INST			: std_logic_vector(31 downto 0);
 	signal RegDst		: std_logic_vector(1 downto 0);
 	signal RegWrite	: std_logic;
+	signal oRegWrite	: std_logic;
 	signal ALUop		: std_logic_vector(1 downto 0);
 	signal AluSrc		: std_logic;
 	signal MemWrite	: std_logic;
@@ -44,7 +45,7 @@ architecture behavior of s_MIPS is
 	signal m_data		: std_logic_vector(31 downto 0);
 	signal l_data		: std_logic_vector(31 downto 0);
 	signal w_data		: std_logic_vector(31 downto 0);
-	signal ALUcontrols: std_logic_vector(3 downto 0);
+	signal ALUcontrols: std_logic_vector(4 downto 0);
 	signal EXPaddr		: std_logic_vector(31 downto 0);
 	signal ALU_B		: std_logic_vector(31 downto 0);
 	signal Result		: std_logic_vector(31 downto 0);
@@ -60,6 +61,8 @@ architecture behavior of s_MIPS is
 	signal DIV			: std_logic;
 	signal HI			: std_logic;
 	signal LO			: std_logic;
+	signal HiLoWrite	: std_logic;
+	signal ozHiLoWrite: std_logic;
 	signal MF			: std_logic;
 	signal HI_out		: std_logic_vector(31 downto 0);
 	signal LO_out		: std_logic_vector(31 downto 0);
@@ -67,12 +70,16 @@ architecture behavior of s_MIPS is
 	signal LUI			: std_logic;
 	signal ImmSrc		: std_logic;
 	signal UnSign		: std_logic;
+	signal MUDI_of		: std_logic;
+	signal ALU_of		: std_logic;
+	signal Overflow	: std_logic;
+	signal ZeroDiv		: std_logic;
 
 	signal DebugAddr	: std_logic_vector(4 downto 0);
 	signal DebugData	: std_logic_vector(31 downto 0);
 	signal Print		: std_logic_vector(15 downto 0);
-	signal Print_PC  : std_logic_vector(15 downto 0);
-	signal dummy_HEX : std_logic_vector(6 downto 0);
+	signal Print_PC	: std_logic_vector(15 downto 0);
+	signal dummy_HEX	: std_logic_vector(6 downto 0);
 
 	component PC port
 	(
@@ -102,24 +109,25 @@ architecture behavior of s_MIPS is
 
 	component ControlUnit port
 	(
-		OPECODE	: in std_logic_vector(5 downto 0);
-		FUNCT		: in std_logic_vector(5 downto 0);
-		RegDst	: out std_logic_vector(1 downto 0);
-		RegWrite	: out std_logic;
-		ALUop		: out std_logic_vector(1 downto 0);
-		AluSrc	: out std_logic;
-		MemWrite	: out std_logic;
-		MemToReg	: out std_logic_vector(1 downto 0);
-		JUMP		: out std_logic;
-		BRANCH	: out std_logic;
-		JR			: out std_logic;
-		MULT		: out std_logic;
-		DIV		: out std_logic;
-		HI			: out std_logic;
-		LO			: out std_logic;
-		LUI		: out std_logic;
-		ImmSrc	: out std_logic;
-		UnSign	: out std_logic
+		OPECODE		: in std_logic_vector(5 downto 0);
+		FUNCT			: in std_logic_vector(5 downto 0);
+		RegDst		: out std_logic_vector(1 downto 0);
+		RegWrite		: out std_logic;
+		ALUop			: out std_logic_vector(1 downto 0);
+		AluSrc		: out std_logic;
+		MemWrite		: out std_logic;
+		MemToReg		: out std_logic_vector(1 downto 0);
+		JUMP			: out std_logic;
+		BRANCH		: out std_logic;
+		JR				: out std_logic;
+		MULT			: out std_logic;
+		DIV			: out std_logic;
+		HI				: out std_logic;
+		LO				: out std_logic;
+		HiLoWrite	: out std_logic;
+		LUI			: out std_logic;
+		ImmSrc		: out std_logic;
+		UnSign		: out std_logic
 	);
 	end component;
 
@@ -144,7 +152,7 @@ architecture behavior of s_MIPS is
 		OPECODE		: in std_logic_vector(5 downto 0);
 		FUNCT			: in std_logic_vector(5 downto 0);
 		ALUop			: in std_logic_vector(1 downto 0);
-		ALUcontrols	: out std_logic_vector(3 downto 0)
+		ALUcontrols	: out std_logic_vector(4 downto 0)
 	);
 	end component;
 
@@ -152,10 +160,11 @@ architecture behavior of s_MIPS is
 	(
 		A				: in std_logic_vector(31 downto 0);
 		B				: in std_logic_vector(31 downto 0);
-		AluControl	: in std_logic_vector(3 downto 0);
+		AluControl	: in std_logic_vector(4 downto 0);
 		shamt			: in std_logic_vector(4 downto 0);
 		Result		: out std_logic_vector(31 downto 0);
-		Zero			: out std_logic
+		Zero			: out std_logic;
+		Overflow		: out std_logic
 	);
 	end component;
 
@@ -187,20 +196,23 @@ architecture behavior of s_MIPS is
 		DIV		: in std_logic;
 		UnSign	: in std_logic;
 		HI_out	: out std_logic_vector(31 downto 0);
-		LO_out	: out std_logic_vector(31 downto 0)
+		LO_out	: out std_logic_vector(31 downto 0);
+		Overflow	: out std_logic;
+		ZeroDiv	: out std_logic
 	);
 	end component;
 
 	component HILO_Reg is port
 	(
-		P_CLK		: in std_logic;
-		A			: in std_logic_vector(31 downto 0);
-		B			: in std_logic_vector(31 downto 0);
-		MULT		: in std_logic;
-		DIV		: in std_logic;
-		HI			: in std_logic;
-		LO			: in std_logic;
-		MF_out	: out std_logic_vector(31 downto 0)
+		P_CLK			: in std_logic;
+		A				: in std_logic_vector(31 downto 0);
+		B				: in std_logic_vector(31 downto 0);
+		MULT			: in std_logic;
+		DIV			: in std_logic;
+		HI				: in std_logic;
+		LO				: in std_logic;
+		HiLoWrite	: in std_logic;
+		MF_out		: out std_logic_vector(31 downto 0)
 	);
 	end component;
 
@@ -218,7 +230,7 @@ begin
 
 	process(CLK)
 	begin
-		if rising_edge(CLK) then
+		if CLK'event and CLK = '1' then
 			rst_sync1 <= not KEY(1);
 			rst_sync2 <= rst_sync1;
 		end if;
@@ -228,9 +240,10 @@ begin
 	U_PC				: PC port map(CLK => CLK, RST => RST, P_CLK => P_CLK, PC_in => PC_in, PC_out => PC_cur);
 	U_PC_add			: PC_add port map(PC_cur => PC_cur, PC_next => PC_next);
 	U_INST_mem		: INST_mem port map(CLK => CLK, P_CLK => P_CLK, ADDR => PC_cur, INSTR => INST);
-	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc, MULT => MULT, DIV => DIV, HI => HI, LO => LO, LUI => LUI, ImmSrc => ImmSrc, UnSign => UnSign);
+	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc, MULT => MULT, DIV => DIV, HI => HI, LO => LO, HiLoWrite => HiLoWrite, LUI => LUI, ImmSrc => ImmSrc, UnSign => UnSign);
 	with RegDst select w_addr <= INST(20 downto 16) when "00", INST(15 downto 11) when "01", "11111" when "10", (others => '0') when others;
-	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => RegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
+	oRegWrite <= '0' when Overflow = '1' else RegWrite;
+	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => oRegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
 	U_AluControl	: AluControl port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
 	process(INST, ImmSrc)
 	begin
@@ -244,9 +257,10 @@ begin
 		end if;
 	end process;
 	ALU_B <= PORT_B when AluSrc = '0' else EXPaddr;
-	U_CALC_MUDI		: CALC_MUDI port map(A => PORT_A, B => ALU_B, MULT => MULT, DIV => DIV, UnSign => UnSign, HI_out => HI_out, LO_out => LO_out);
-	U_HILO_Reg		: HILO_Reg port map(P_CLK => P_CLK, A => HI_out, B => LO_out, MULT => MULT, DIV => DIV, HI => HI, LO => LO, MF_out => MF_out);
-	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, shamt => INST(10 downto 6), Result => Result, Zero => Zero);
+	U_CALC_MUDI		: CALC_MUDI port map(A => PORT_A, B => ALU_B, MULT => MULT, DIV => DIV, UnSign => UnSign, HI_out => HI_out, LO_out => LO_out, Overflow => MUDI_of, ZeroDiv => ZeroDiv);
+	ozHiLoWrite <= HiLoWrite and ((not MUDI_of) or (not ZeroDiv));
+	U_HILO_Reg		: HILO_Reg port map(P_CLK => P_CLK, A => HI_out, B => LO_out, MULT => MULT, DIV => DIV, HI => HI, LO => LO, HiLoWrite => ozHiLoWrite, MF_out => MF_out);
+	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, shamt => INST(10 downto 6), Result => Result, Zero => Zero, Overflow => ALU_of);
 	U_Branch			: Branch port map(BRANCHc => BRANCHc, INST26 => INST(26), ZERO => ZERO, BraCtrl => BraCtrl);
 	U_DataMem		: DataMem port map(CLK => CLK, P_CLK => P_CLK, MemWrite => MemWrite, Address => Result, WriteData => PORT_B, ReadData => ReadData);
 	with MemToReg select m_data <= Result when "00", ReadData when "01", PC_next when "10", (others => '0') when others;
@@ -259,11 +273,12 @@ begin
 	PC_jump <= PC_next(31 downto 28) & INST(25 downto 0) & "00";
 	PC_jr <= PC_jb when JUMP = '0' else PC_jump;
 	PC_in <= PC_jr when JRc = '0' else PORT_A;
+	Overflow <= MUDI_of or ALU_of;
 
 	DebugAddr <= SW(4 downto 0);
 	Print <= DebugData(15 downto 0) when SW(5) = '0' else DebugData(31 downto 16);
-	U_DebugPrint : entity work.DebugPrint port map(Print => Print, HEX0  => HEX0, HEX1  => HEX1, HEX2  => HEX2,HEX3  => HEX3);
+	U_DebugPrint : entity work.DebugPrint port map(Print => Print, Overflow => Overflow, ZeroDiv => ZeroDiv, HEX0  => HEX0, HEX1  => HEX1, HEX2  => HEX2,HEX3  => HEX3);
 	Print_PC <= x"00" & PC_cur(7 downto 0);
-	U_DebugPrint_PC : entity work.DebugPrint port map(Print => Print_PC, HEX0  => HEX4, HEX1  => HEX5, HEX2  => dummy_HEX, HEX3  => dummy_HEX);
+	U_DebugPrint_PC : entity work.DebugPrint port map(Print => Print_PC, Overflow => '0', ZeroDiv => '0', HEX0  => HEX4, HEX1  => HEX5, HEX2  => dummy_HEX, HEX3  => dummy_HEX);
 
 end behavior;

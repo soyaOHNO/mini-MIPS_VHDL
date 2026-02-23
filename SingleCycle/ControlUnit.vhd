@@ -3,24 +3,25 @@ use IEEE.std_logic_1164.all;
 
 entity ControlUnit is port
 (
-	OPECODE	: in std_logic_vector(5 downto 0);
-	FUNCT		: in std_logic_vector(5 downto 0);
-	RegDst	: out std_logic_vector(1 downto 0);
-	RegWrite	: out std_logic;
-	ALUop		: out std_logic_vector(1 downto 0);
-	AluSrc	: out std_logic;
-	MemWrite	: out std_logic;
-	MemToReg	: out std_logic_vector(1 downto 0);
-	JUMP		: out std_logic;
-	BRANCH	: out std_logic;
-	JR			: out std_logic;
-	MULT		: out std_logic;
-	DIV		: out std_logic;
-	HI			: out std_logic;
-	LO			: out std_logic;
-	LUI		: out std_logic;
-	ImmSrc	: out std_logic;
-	UnSign	: out std_logic
+	OPECODE		: in std_logic_vector(5 downto 0);
+	FUNCT			: in std_logic_vector(5 downto 0);
+	RegDst		: out std_logic_vector(1 downto 0);
+	RegWrite		: out std_logic;
+	ALUop			: out std_logic_vector(1 downto 0);
+	AluSrc		: out std_logic;
+	MemWrite		: out std_logic;
+	MemToReg		: out std_logic_vector(1 downto 0);
+	JUMP			: out std_logic;
+	BRANCH		: out std_logic;
+	JR				: out std_logic;
+	MULT			: out std_logic;
+	DIV			: out std_logic;
+	HI				: out std_logic;
+	LO				: out std_logic;
+	HiLoWrite	: out std_logic;
+	LUI			: out std_logic;
+	ImmSrc		: out std_logic;
+	UnSign		: out std_logic
 );
 end ControlUnit;
 
@@ -29,22 +30,23 @@ begin
 
 	process(OPECODE)
 	begin
-		RegDst   <= "00";
-		RegWrite <= '0';
-		ALUop    <= "00";
-		AluSrc   <= '0';
-		MemWrite <= '0';
-		MemToReg <= "00";
-		JUMP     <= '0';
-		BRANCH   <= '0';
-		JR			<= '0';
-		MULT		<= '0';
-		DIV		<= '0';
-		HI			<= '0';
-		LO			<= '0';
-		LUI		<= '0';
-		ImmSrc	<= '0';
-		UnSign	<= '0';
+		RegDst   	<= "00";
+		RegWrite 	<= '0';
+		ALUop    	<= "00";
+		AluSrc   	<= '0';
+		MemWrite 	<= '0';
+		MemToReg 	<= "00";
+		JUMP     	<= '0';
+		BRANCH   	<= '0';
+		JR				<= '0';
+		MULT			<= '0';
+		DIV			<= '0';
+		HI				<= '0';
+		LO				<= '0';
+		HiLoWrite	<= '0';
+		LUI			<= '0';
+		ImmSrc		<= '0';
+		UnSign		<= '0';
 
 		case OPECODE is
 			when "000000" =>   -- R
@@ -53,13 +55,17 @@ begin
 						JR <= '1';
 					when "011000" =>   -- mult
 						MULT <= '1';
+						HiLoWrite <= '1';
 					when "011001" =>   -- multu
 						MULT <= '1';
+						HiLoWrite <= '1';
 						UnSign <= '1';
 					when "011010" =>   -- div
 						DIV <= '1';
+						HiLoWrite <= '1';
 					when "011011" =>   -- divu
 						DIV <= '1';
+						HiLoWrite <= '1';
 						UnSign <= '1';
 					when "010000" =>
 						HI			<= '1';
