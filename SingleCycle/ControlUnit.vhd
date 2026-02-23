@@ -21,7 +21,8 @@ entity ControlUnit is port
 	HiLoWrite	: out std_logic;
 	LUI			: out std_logic;
 	ImmSrc		: out std_logic;
-	UnSign		: out std_logic
+	UnSign		: out std_logic;
+	MemByte		: out std_logic
 );
 end ControlUnit;
 
@@ -47,6 +48,7 @@ begin
 		LUI			<= '0';
 		ImmSrc		<= '0';
 		UnSign		<= '0';
+		MemByte		<= '0';
 
 		case OPECODE is
 			when "000000" =>   -- R
@@ -94,6 +96,17 @@ begin
 			when "101011" =>   -- sw
 				AluSrc   <= '1';
 				MemWrite <= '1';
+
+			when "100000" =>   -- lb
+				RegWrite <= '1';
+				AluSrc   <= '1';
+				MemByte	<= '1';
+				MemToReg <= "01";
+
+			when "101000" =>   -- sb
+				AluSrc   <= '1';
+				MemWrite <= '1';
+				MemByte	<= '1';
 
 			when "001111" =>   -- LUI
 				RegWrite <= '1';
