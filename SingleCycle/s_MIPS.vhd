@@ -81,6 +81,9 @@ architecture behavior of s_MIPS is
 	signal Print		: std_logic_vector(15 downto 0);
 	signal Print_PC	: std_logic_vector(15 downto 0);
 	signal dummy_HEX	: std_logic_vector(6 downto 0);
+	-- 自動実行用のカウンタとパルス信号
+	signal counter		: integer range 0 to 4999999 := 0;
+	signal auto_pulse	: std_logic;
 
 	component PC port
 	(
@@ -224,12 +227,23 @@ begin
 
 	process(CLK)
 	begin
-		if (CLK'event and CLK = '1') then
+		if rising_edge(CLK) then -- (CLK'event and CLK = '1') と同じ意味です
+			-- 【手動用】ボタンのエッジ検出
 			key_sync1 <= not KEY(0);
 			key_sync2 <= key_sync1;
+			
+			-- 【自動用】5,000,000進カウンタ (50MHzクロックで0.1秒周期)
+			if counter = 4999999 then
+				counter <= 0;
+				auto_pulse <= '1'; -- 1クロック分だけパルスを立てる
+			else
+				counter <= counter + 1;
+				auto_pulse <= '0';
+			end if;
 		end if;
 	end process;
-	P_CLK <= key_sync1 and not key_sync2;
+	-- SW(6) が '0' の時は自動パルス、'1' の時は手動パルスを P_CLK に接続
+	P_CLK <= auto_pulse when SW(6) = '1' else (key_sync1 and (not key_sync2));
 
 	process(CLK)
 	begin
