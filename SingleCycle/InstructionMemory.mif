@@ -1,368 +1,497 @@
--- Quartus Prime generated Memory Initialization File (.mif)
 WIDTH=32;
-DEPTH=1024; -- DataMem拡張に合わせて容量変更
+DEPTH=1024;
 ADDRESS_RADIX=HEX;
 DATA_RADIX=HEX;
 
 CONTENT BEGIN
-    000 : 201D0400; -- addi $sp, $zero, 1024
-    001 : 23BE0000; -- addi $fp, $sp, 0
-    002 : 0C0000E8; -- jal 0x000003A0
-    003 : 00000000; -- nop
-    004 : 08000004; -- j 0x00000010
-    005 : 00000000; -- nop
-    006 : 23BDFFF8; -- addi $sp, $sp, -8
-    007 : AFBF0000; -- sw $ra, 0($sp)
-    008 : AFBE0004; -- sw $fp, 4($sp)
-    009 : 23BE0000; -- addi $fp, $sp, 0
-    00A : 23BDFFD8; -- addi $sp, $sp, -40
-    00B : 8FC90010; -- lw $t1, 16($fp)
-    00C : 8FCA000C; -- lw $t2, 12($fp)
-    00D : 00000000; -- nop
-    00E : 0149402A; -- slt $t0, $t2, $t1
-    00F : 110000D2; -- beq $t0, $zero, 0xD2
-    010 : 00000000; -- nop
-    011 : 20090000; -- addi $t1, $zero, 0
-    012 : 8FCB0010; -- lw $t3, 16($fp)
-    013 : 200AFFFF; -- addi $t2, $zero, -1
-    014 : 012A0018; -- mult $t1, $t2
-    015 : 00004812; -- mflo $t1
-    016 : 012B4820; -- add $t1, $t1, $t3
-    017 : 8FC80008; -- lw $t0, 8($fp)
-    018 : 00094880; -- sll $t1, $t1, 2
-    019 : 01094020; -- add $t0, $t0, $t1
-    01A : 8D020000; -- lw $v0, 0($t0)
-    01B : 00000000; -- nop
-    01C : AFC2FFE8; -- sw $v0, -24($fp)
-    01D : 8FC8000C; -- lw $t0, 12($fp)
-    01E : 00000000; -- nop
-    01F : AFA8FFFC; -- sw $t0, -4($sp)
-    020 : 23BDFFFC; -- addi $sp, $sp, -4
-    021 : 20080001; -- addi $t0, $zero, 1
-    022 : 8FA90000; -- lw $t1, 0($sp)
-    023 : 23BD0004; -- addi $sp, $sp, 4
-    024 : 01281022; -- sub $v0, $t1, $t0
-    025 : AFC2FFE4; -- sw $v0, -28($fp)
-    026 : 8FC20010; -- lw $v0, 16($fp)
-    027 : 00000000; -- nop
-    028 : AFC2FFE0; -- sw $v0, -32($fp)
-    029 : 200B0000; -- addi $t3, $zero, 0
-    02A : 8FCEFFE4; -- lw $t6, -28($fp)
-    02B : 00000000; -- nop
-    02C : 21CE0001; -- addi $t6, $t6, 1
-    02D : AFCEFFE4; -- sw $t6, -28($fp)
-    02E : 21CD0000; -- addi $t5, $t6, 0
-    02F : 200CFFFF; -- addi $t4, $zero, -1
-    030 : 016C0018; -- mult $t3, $t4
-    031 : 00005812; -- mflo $t3
-    032 : 016D5820; -- add $t3, $t3, $t5
-    033 : 8FCA0008; -- lw $t2, 8($fp)
-    034 : 000B5880; -- sll $t3, $t3, 2
-    035 : 014B5020; -- add $t2, $t2, $t3
-    036 : 8D490000; -- lw $t1, 0($t2)
-    037 : 8FCAFFE8; -- lw $t2, -24($fp)
-    038 : 00000000; -- nop
-    039 : 012A402A; -- slt $t0, $t1, $t2
-    03A : 11000003; -- beq $t0, $zero, 0x03
-    03B : 00000000; -- nop
-    03C : 08000029; -- j 0x000000A4
-    03D : 00000000; -- nop
-    03E : 200B0000; -- addi $t3, $zero, 0
-    03F : 8FCEFFE0; -- lw $t6, -32($fp)
-    040 : 00000000; -- nop
-    041 : 21CEFFFF; -- addi $t6, $t6, -1
-    042 : AFCEFFE0; -- sw $t6, -32($fp)
-    043 : 21CD0000; -- addi $t5, $t6, 0
-    044 : 200CFFFF; -- addi $t4, $zero, -1
-    045 : 016C0018; -- mult $t3, $t4
-    046 : 00005812; -- mflo $t3
-    047 : 016D5820; -- add $t3, $t3, $t5
-    048 : 8FCA0008; -- lw $t2, 8($fp)
-    049 : 000B5880; -- sll $t3, $t3, 2
-    04A : 014B5020; -- add $t2, $t2, $t3
-    04B : 8D490000; -- lw $t1, 0($t2)
-    04C : 8FCAFFE8; -- lw $t2, -24($fp)
-    04D : 00000000; -- nop
-    04E : 0149402A; -- slt $t0, $t2, $t1
-    04F : 11000003; -- beq $t0, $zero, 0x03
-    050 : 00000000; -- nop
-    051 : 0800003E; -- j 0x000000F8
-    052 : 00000000; -- nop
-    053 : 8FC9FFE4; -- lw $t1, -28($fp)
-    054 : 8FCAFFE0; -- lw $t2, -32($fp)
-    055 : 00000000; -- nop
-    056 : 012A402A; -- slt $t0, $t1, $t2
-    057 : 39080001; -- xori $t0, $t0, 1
-    058 : 11000005; -- beq $t0, $zero, 0x05
-    059 : 00000000; -- nop
-    05A : 0800008D; -- j 0x00000234
-    05B : 00000000; -- nop
-    05C : 0800005E; -- j 0x00000178
-    05D : 00000000; -- nop
-    05E : 20090000; -- addi $t1, $zero, 0
-    05F : 8FCBFFE4; -- lw $t3, -28($fp)
-    060 : 200AFFFF; -- addi $t2, $zero, -1
-    061 : 012A0018; -- mult $t1, $t2
-    062 : 00004812; -- mflo $t1
-    063 : 012B4820; -- add $t1, $t1, $t3
-    064 : 8FC80008; -- lw $t0, 8($fp)
-    065 : 00094880; -- sll $t1, $t1, 2
-    066 : 01094020; -- add $t0, $t0, $t1
-    067 : 8D020000; -- lw $v0, 0($t0)
-    068 : 00000000; -- nop
-    069 : AFC2FFDC; -- sw $v0, -36($fp)
-    06A : 20090000; -- addi $t1, $zero, 0
-    06B : 8FCBFFE4; -- lw $t3, -28($fp)
-    06C : 200AFFFF; -- addi $t2, $zero, -1
-    06D : 012A0018; -- mult $t1, $t2
-    06E : 00004812; -- mflo $t1
-    06F : 012B4820; -- add $t1, $t1, $t3
-    070 : 8FC80008; -- lw $t0, 8($fp)
-    071 : 00094880; -- sll $t1, $t1, 2
-    072 : 01094020; -- add $t0, $t0, $t1
-    073 : 200A0000; -- addi $t2, $zero, 0
-    074 : 8FCCFFE0; -- lw $t4, -32($fp)
-    075 : 200BFFFF; -- addi $t3, $zero, -1
-    076 : 014B0018; -- mult $t2, $t3
-    077 : 00005012; -- mflo $t2
-    078 : 014C5020; -- add $t2, $t2, $t4
-    079 : 8FC90008; -- lw $t1, 8($fp)
-    07A : 000A5080; -- sll $t2, $t2, 2
-    07B : 012A4820; -- add $t1, $t1, $t2
-    07C : 8D220000; -- lw $v0, 0($t1)
-    07D : 00000000; -- nop
-    07E : AD020000; -- sw $v0, 0($t0)
-    07F : 20090000; -- addi $t1, $zero, 0
-    080 : 8FCBFFE0; -- lw $t3, -32($fp)
-    081 : 200AFFFF; -- addi $t2, $zero, -1
-    082 : 012A0018; -- mult $t1, $t2
-    083 : 00004812; -- mflo $t1
-    084 : 012B4820; -- add $t1, $t1, $t3
-    085 : 8FC80008; -- lw $t0, 8($fp)
-    086 : 00094880; -- sll $t1, $t1, 2
-    087 : 01094020; -- add $t0, $t0, $t1
-    088 : 8FC2FFDC; -- lw $v0, -36($fp)
-    089 : 00000000; -- nop
-    08A : AD020000; -- sw $v0, 0($t0)
-    08B : 08000029; -- j 0x000000A4
-    08C : 00000000; -- nop
-    08D : 20090000; -- addi $t1, $zero, 0
-    08E : 8FCBFFE4; -- lw $t3, -28($fp)
-    08F : 200AFFFF; -- addi $t2, $zero, -1
-    090 : 012A0018; -- mult $t1, $t2
-    091 : 00004812; -- mflo $t1
-    092 : 012B4820; -- add $t1, $t1, $t3
-    093 : 8FC80008; -- lw $t0, 8($fp)
-    094 : 00094880; -- sll $t1, $t1, 2
-    095 : 01094020; -- add $t0, $t0, $t1
-    096 : 8D020000; -- lw $v0, 0($t0)
-    097 : 00000000; -- nop
-    098 : AFC2FFDC; -- sw $v0, -36($fp)
-    099 : 20090000; -- addi $t1, $zero, 0
-    09A : 8FCBFFE4; -- lw $t3, -28($fp)
-    09B : 200AFFFF; -- addi $t2, $zero, -1
-    09C : 012A0018; -- mult $t1, $t2
-    09D : 00004812; -- mflo $t1
-    09E : 012B4820; -- add $t1, $t1, $t3
-    09F : 8FC80008; -- lw $t0, 8($fp)
-    0A0 : 00094880; -- sll $t1, $t1, 2
-    0A1 : 01094020; -- add $t0, $t0, $t1
-    0A2 : 200A0000; -- addi $t2, $zero, 0
-    0A3 : 8FCC0010; -- lw $t4, 16($fp)
-    0A4 : 200BFFFF; -- addi $t3, $zero, -1
-    0A5 : 014B0018; -- mult $t2, $t3
-    0A6 : 00005012; -- mflo $t2
-    0A7 : 014C5020; -- add $t2, $t2, $t4
-    0A8 : 8FC90008; -- lw $t1, 8($fp)
-    0A9 : 000A5080; -- sll $t2, $t2, 2
-    0AA : 012A4820; -- add $t1, $t1, $t2
-    0AB : 8D220000; -- lw $v0, 0($t1)
-    0AC : 00000000; -- nop
-    0AD : AD020000; -- sw $v0, 0($t0)
-    0AE : 20090000; -- addi $t1, $zero, 0
-    0AF : 8FCB0010; -- lw $t3, 16($fp)
-    0B0 : 200AFFFF; -- addi $t2, $zero, -1
-    0B1 : 012A0018; -- mult $t1, $t2
-    0B2 : 00004812; -- mflo $t1
-    0B3 : 012B4820; -- add $t1, $t1, $t3
-    0B4 : 8FC80008; -- lw $t0, 8($fp)
-    0B5 : 00094880; -- sll $t1, $t1, 2
-    0B6 : 01094020; -- add $t0, $t0, $t1
-    0B7 : 8FC2FFDC; -- lw $v0, -36($fp)
-    0B8 : 00000000; -- nop
-    0B9 : AD020000; -- sw $v0, 0($t0)
-    0BA : 8FC8FFE4; -- lw $t0, -28($fp)
-    0BB : 00000000; -- nop
-    0BC : AFA8FFFC; -- sw $t0, -4($sp)
-    0BD : 23BDFFFC; -- addi $sp, $sp, -4
-    0BE : 20080001; -- addi $t0, $zero, 1
-    0BF : 8FA90000; -- lw $t1, 0($sp)
-    0C0 : 23BD0004; -- addi $sp, $sp, 4
-    0C1 : 01281022; -- sub $v0, $t1, $t0
-    0C2 : 23BDFFFC; -- addi $sp, $sp, -4
-    0C3 : AFA20000; -- sw $v0, 0($sp)
-    0C4 : 8FC2000C; -- lw $v0, 12($fp)
-    0C5 : 23BDFFFC; -- addi $sp, $sp, -4
-    0C6 : AFA20000; -- sw $v0, 0($sp)
-    0C7 : 8FC20008; -- lw $v0, 8($fp)
-    0C8 : 23BDFFFC; -- addi $sp, $sp, -4
-    0C9 : AFA20000; -- sw $v0, 0($sp)
-    0CA : 0C000006; -- jal 0x00000018
-    0CB : 00000000; -- nop
-    0CC : 23BD000C; -- addi $sp, $sp, 12
-    0CD : 8FC20010; -- lw $v0, 16($fp)
-    0CE : 23BDFFFC; -- addi $sp, $sp, -4
-    0CF : AFA20000; -- sw $v0, 0($sp)
-    0D0 : 8FC8FFE4; -- lw $t0, -28($fp)
-    0D1 : 00000000; -- nop
-    0D2 : AFA8FFFC; -- sw $t0, -4($sp)
-    0D3 : 23BDFFFC; -- addi $sp, $sp, -4
-    0D4 : 20080001; -- addi $t0, $zero, 1
-    0D5 : 8FA90000; -- lw $t1, 0($sp)
-    0D6 : 23BD0004; -- addi $sp, $sp, 4
-    0D7 : 01281020; -- add $v0, $t1, $t0
-    0D8 : 23BDFFFC; -- addi $sp, $sp, -4
-    0D9 : AFA20000; -- sw $v0, 0($sp)
-    0DA : 8FC20008; -- lw $v0, 8($fp)
-    0DB : 23BDFFFC; -- addi $sp, $sp, -4
-    0DC : AFA20000; -- sw $v0, 0($sp)
-    0DD : 0C000006; -- jal 0x00000018
-    0DE : 00000000; -- nop
-    0DF : 23BD000C; -- addi $sp, $sp, 12
-    0E0 : 080000E2; -- j 0x00000388
-    0E1 : 00000000; -- nop
-    0E2 : 23BD0028; -- addi $sp, $sp, 40
-    0E3 : 8FBF0000; -- lw $ra, 0($sp)
-    0E4 : 8FBE0004; -- lw $fp, 4($sp)
-    0E5 : 23BD0008; -- addi $sp, $sp, 8
-    0E6 : 03E00008; -- jr $ra
-    0E7 : 00000000; -- nop
-    0E8 : 23BDFFF8; -- addi $sp, $sp, -8
-    0E9 : AFBF0000; -- sw $ra, 0($sp)
-    0EA : AFBE0004; -- sw $fp, 4($sp)
-    0EB : 23BE0000; -- addi $fp, $sp, 0
-    0EC : 23BDFFD8; -- addi $sp, $sp, -40
-    0ED : 20090000; -- addi $t1, $zero, 0
-    0EE : 200B0000; -- addi $t3, $zero, 0
-    0EF : 200A000A; -- addi $t2, $zero, 10
-    0F0 : 012A0018; -- mult $t1, $t2
-    0F1 : 00004812; -- mflo $t1
-    0F2 : 012B4820; -- add $t1, $t1, $t3
-    0F3 : 23C8FFD8; -- addi $t0, $fp, -40
-    0F4 : 00094880; -- sll $t1, $t1, 2
-    0F5 : 01094020; -- add $t0, $t0, $t1
-    0F6 : 2002000A; -- addi $v0, $zero, 10
-    0F7 : AD020000; -- sw $v0, 0($t0)
-    0F8 : 20090000; -- addi $t1, $zero, 0
-    0F9 : 200B0001; -- addi $t3, $zero, 1
-    0FA : 200A000A; -- addi $t2, $zero, 10
-    0FB : 012A0018; -- mult $t1, $t2
-    0FC : 00004812; -- mflo $t1
-    0FD : 012B4820; -- add $t1, $t1, $t3
-    0FE : 23C8FFD8; -- addi $t0, $fp, -40
-    0FF : 00094880; -- sll $t1, $t1, 2
-    100 : 01094020; -- add $t0, $t0, $t1
-    101 : 20020004; -- addi $v0, $zero, 4
-    102 : AD020000; -- sw $v0, 0($t0)
-    103 : 20090000; -- addi $t1, $zero, 0
-    104 : 200B0002; -- addi $t3, $zero, 2
-    105 : 200A000A; -- addi $t2, $zero, 10
-    106 : 012A0018; -- mult $t1, $t2
-    107 : 00004812; -- mflo $t1
-    108 : 012B4820; -- add $t1, $t1, $t3
-    109 : 23C8FFD8; -- addi $t0, $fp, -40
-    10A : 00094880; -- sll $t1, $t1, 2
-    10B : 01094020; -- add $t0, $t0, $t1
-    10C : 20020002; -- addi $v0, $zero, 2
-    10D : AD020000; -- sw $v0, 0($t0)
-    10E : 20090000; -- addi $t1, $zero, 0
-    10F : 200B0003; -- addi $t3, $zero, 3
-    110 : 200A000A; -- addi $t2, $zero, 10
-    111 : 012A0018; -- mult $t1, $t2
-    112 : 00004812; -- mflo $t1
-    113 : 012B4820; -- add $t1, $t1, $t3
-    114 : 23C8FFD8; -- addi $t0, $fp, -40
-    115 : 00094880; -- sll $t1, $t1, 2
-    116 : 01094020; -- add $t0, $t0, $t1
-    117 : 20020007; -- addi $v0, $zero, 7
-    118 : AD020000; -- sw $v0, 0($t0)
-    119 : 20090000; -- addi $t1, $zero, 0
-    11A : 200B0004; -- addi $t3, $zero, 4
-    11B : 200A000A; -- addi $t2, $zero, 10
-    11C : 012A0018; -- mult $t1, $t2
-    11D : 00004812; -- mflo $t1
-    11E : 012B4820; -- add $t1, $t1, $t3
-    11F : 23C8FFD8; -- addi $t0, $fp, -40
-    120 : 00094880; -- sll $t1, $t1, 2
-    121 : 01094020; -- add $t0, $t0, $t1
-    122 : 20020003; -- addi $v0, $zero, 3
-    123 : AD020000; -- sw $v0, 0($t0)
-    124 : 20090000; -- addi $t1, $zero, 0
-    125 : 200B0005; -- addi $t3, $zero, 5
-    126 : 200A000A; -- addi $t2, $zero, 10
-    127 : 012A0018; -- mult $t1, $t2
-    128 : 00004812; -- mflo $t1
-    129 : 012B4820; -- add $t1, $t1, $t3
-    12A : 23C8FFD8; -- addi $t0, $fp, -40
-    12B : 00094880; -- sll $t1, $t1, 2
-    12C : 01094020; -- add $t0, $t0, $t1
-    12D : 20020005; -- addi $v0, $zero, 5
-    12E : AD020000; -- sw $v0, 0($t0)
-    12F : 20090000; -- addi $t1, $zero, 0
-    130 : 200B0006; -- addi $t3, $zero, 6
-    131 : 200A000A; -- addi $t2, $zero, 10
-    132 : 012A0018; -- mult $t1, $t2
-    133 : 00004812; -- mflo $t1
-    134 : 012B4820; -- add $t1, $t1, $t3
-    135 : 23C8FFD8; -- addi $t0, $fp, -40
-    136 : 00094880; -- sll $t1, $t1, 2
-    137 : 01094020; -- add $t0, $t0, $t1
-    138 : 20020009; -- addi $v0, $zero, 9
-    139 : AD020000; -- sw $v0, 0($t0)
-    13A : 20090000; -- addi $t1, $zero, 0
-    13B : 200B0007; -- addi $t3, $zero, 7
-    13C : 200A000A; -- addi $t2, $zero, 10
-    13D : 012A0018; -- mult $t1, $t2
-    13E : 00004812; -- mflo $t1
-    13F : 012B4820; -- add $t1, $t1, $t3
-    140 : 23C8FFD8; -- addi $t0, $fp, -40
-    141 : 00094880; -- sll $t1, $t1, 2
-    142 : 01094020; -- add $t0, $t0, $t1
-    143 : 2002000A; -- addi $v0, $zero, 10
-    144 : AD020000; -- sw $v0, 0($t0)
-    145 : 20090000; -- addi $t1, $zero, 0
-    146 : 200B0008; -- addi $t3, $zero, 8
-    147 : 200A000A; -- addi $t2, $zero, 10
-    148 : 012A0018; -- mult $t1, $t2
-    149 : 00004812; -- mflo $t1
-    14A : 012B4820; -- add $t1, $t1, $t3
-    14B : 23C8FFD8; -- addi $t0, $fp, -40
-    14C : 00094880; -- sll $t1, $t1, 2
-    14D : 01094020; -- add $t0, $t0, $t1
-    14E : 20020001; -- addi $v0, $zero, 1
-    14F : AD020000; -- sw $v0, 0($t0)
-    150 : 20090000; -- addi $t1, $zero, 0
-    151 : 200B0009; -- addi $t3, $zero, 9
-    152 : 200A000A; -- addi $t2, $zero, 10
-    153 : 012A0018; -- mult $t1, $t2
-    154 : 00004812; -- mflo $t1
-    155 : 012B4820; -- add $t1, $t1, $t3
-    156 : 23C8FFD8; -- addi $t0, $fp, -40
-    157 : 00094880; -- sll $t1, $t1, 2
-    158 : 01094020; -- add $t0, $t0, $t1
-    159 : 20020008; -- addi $v0, $zero, 8
-    15A : AD020000; -- sw $v0, 0($t0)
-    15B : 20020009; -- addi $v0, $zero, 9
-    15C : 23BDFFFC; -- addi $sp, $sp, -4
-    15D : AFA20000; -- sw $v0, 0($sp)
-    15E : 20020000; -- addi $v0, $zero, 0
-    15F : 23BDFFFC; -- addi $sp, $sp, -4
-    160 : AFA20000; -- sw $v0, 0($sp)
-    161 : 23C2FFD8; -- addi $v0, $fp, -40
-    162 : 23BDFFFC; -- addi $sp, $sp, -4
-    163 : AFA20000; -- sw $v0, 0($sp)
-    164 : 0C000006; -- jal 0x00000018
-    165 : 00000000; -- nop
-    166 : 23BD000C; -- addi $sp, $sp, 12
-    [167..3FF] : 00000000;
+	000 : 201D0400; -- 	addi   $sp, $zero, 1024
+	001 : 23BE0000; -- 	addi   $fp, $sp, 0
+	002 : 0C000112; -- 	jal		main # jump to `main`
+	003 : 00000000; -- 	nop #(delay slot)
+	004 : 08000004; -- 	j		stop # infinite loop...
+	005 : 00000000; -- 	nop #(delay slot)
+	006 : 23BDFFF8; -- 	addi	$sp, $sp, -8	# Colling convention
+	007 : AFBF0000; -- 	sw		$ra, 0($sp)	# Saving $ra
+	008 : AFBE0004; -- 	sw		$fp, 4($sp)	# Saving $fp
+	009 : 23BE0000; -- 	addi	$fp, $sp, 0
+	00A : 23BDFFD8; -- 	addi	$sp, $sp, -40	# allocate local variables
+	00B : 8FC20010; -- 	lw		$v0, 16($fp)
+	00C : 00000000; -- 	nop
+	00D : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	00E : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	00F : 8FC2000C; -- 	lw		$v0, 12($fp)
+	010 : 8FA80000; -- 	lw		$t0, 0($sp)
+	011 : 23BD0004; -- 	addi	$sp, $sp, 4
+	012 : 0048102A; -- 	slt		$v0, $v0, $t0
+	013 : 104000F8; -- 	beq		$v0, $zero, _IF_1
+	014 : 00000000; -- 	nop
+	015 : 20000000; -- 	addi		$t1, 0
+	016 : 8FC20010; -- 	lw		$v0, 16($fp)
+	017 : 3C0AFFFF; -- 	lui		$t2, 65535
+	018 : 354AFFFF; -- 	ori		$t2, $t2, 65535
+	019 : 012A0018; -- 	mult	$t1, $t2
+	01A : 00004812; -- 	mflo	$t1
+	01B : 01224820; -- 	add		$t1, $t1, $v0
+	01C : 8FC20008; -- 	lw		$v0, 8($fp)
+	01D : 00094880; -- 	sll		$t1, $t1, 2
+	01E : 00491020; -- 	add		$v0, $v0, $t1
+	01F : 8C420000; -- 	lw		$v0, 0($v0)
+	020 : 00000000; -- 	nop
+	021 : AFC2FFE8; -- 	sw		$v0, -24($fp)
+	022 : 8FC2000C; -- 	lw		$v0, 12($fp)
+	023 : 00000000; -- 	nop
+	024 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	025 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	026 : 3C020000; -- 	lui		$v0, 0
+	027 : 34420001; -- 	ori		$v0, $v0, 1
+	028 : 8FA80000; -- 	lw		$t0, 0($sp)
+	029 : 23BD0004; -- 	addi	$sp, $sp, 4
+	02A : 01021022; -- 	sub		$v0, $t0, $v0	# SUB_AST
+	02B : AFC2FFE4; -- 	sw		$v0, -28($fp)
+	02C : 8FC20010; -- 	lw		$v0, 16($fp)
+	02D : 00000000; -- 	nop
+	02E : AFC2FFE0; -- 	sw		$v0, -32($fp)
+	02F : 20000000; -- 	addi		$t1, 0
+	030 : 8FCBFFE4; -- 	lw		$t3, -28($fp)
+	031 : 00000000; -- 	nop
+	032 : 216B0001; -- 	addi	$t3, $t3, 1
+	033 : AFCBFFE4; -- 	sw		$t3, -28($fp)
+	034 : 21620000; -- 	addi	$v0, $t3, 0
+	035 : 3C0AFFFF; -- 	lui		$t2, 65535
+	036 : 354AFFFF; -- 	ori		$t2, $t2, 65535
+	037 : 012A0018; -- 	mult	$t1, $t2
+	038 : 00004812; -- 	mflo	$t1
+	039 : 01224820; -- 	add		$t1, $t1, $v0
+	03A : 8FC20008; -- 	lw		$v0, 8($fp)
+	03B : 00094880; -- 	sll		$t1, $t1, 2
+	03C : 00491020; -- 	add		$v0, $v0, $t1
+	03D : 8C420000; -- 	lw		$v0, 0($v0)
+	03E : 00000000; -- 	nop
+	03F : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	040 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	041 : 8FC2FFE8; -- 	lw		$v0, -24($fp)
+	042 : 8FA80000; -- 	lw		$t0, 0($sp)
+	043 : 23BD0004; -- 	addi	$sp, $sp, 4
+	044 : 0102102A; -- 	slt		$v0, $t0, $v0
+	045 : 10400003; -- 	beq		$v0, $zero, _WHILE_END_0
+	046 : 00000000; -- 	nop
+	047 : 0800002F; -- 	j		_WHILE_0
+	048 : 00000000; -- 	nop
+	049 : 20000000; -- 	addi		$t1, 0
+	04A : 8FCBFFE0; -- 	lw		$t3, -32($fp)
+	04B : 00000000; -- 	nop
+	04C : 216BFFFF; -- 	addi	$t3, $t3, -1
+	04D : AFCBFFE0; -- 	sw		$t3, -32($fp)
+	04E : 21620000; -- 	addi	$v0, $t3, 0
+	04F : 3C0AFFFF; -- 	lui		$t2, 65535
+	050 : 354AFFFF; -- 	ori		$t2, $t2, 65535
+	051 : 012A0018; -- 	mult	$t1, $t2
+	052 : 00004812; -- 	mflo	$t1
+	053 : 01224820; -- 	add		$t1, $t1, $v0
+	054 : 8FC20008; -- 	lw		$v0, 8($fp)
+	055 : 00094880; -- 	sll		$t1, $t1, 2
+	056 : 00491020; -- 	add		$v0, $v0, $t1
+	057 : 8C420000; -- 	lw		$v0, 0($v0)
+	058 : 00000000; -- 	nop
+	059 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	05A : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	05B : 8FC2FFE8; -- 	lw		$v0, -24($fp)
+	05C : 8FA80000; -- 	lw		$t0, 0($sp)
+	05D : 23BD0004; -- 	addi	$sp, $sp, 4
+	05E : 0048102A; -- 	slt		$v0, $v0, $t0
+	05F : 10400003; -- 	beq		$v0, $zero, _WHILE_END_1
+	060 : 00000000; -- 	nop
+	061 : 08000049; -- 	j		_WHILE_1
+	062 : 00000000; -- 	nop
+	063 : 8FC2FFE4; -- 	lw		$v0, -28($fp)
+	064 : 00000000; -- 	nop
+	065 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	066 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	067 : 8FC2FFE0; -- 	lw		$v0, -32($fp)
+	068 : 8FA80000; -- 	lw		$t0, 0($sp)
+	069 : 23BD0004; -- 	addi	$sp, $sp, 4
+	06A : 0102102A; -- 	slt		$v0, $t0, $v0
+	06B : 38420001; -- 	xori	$v0, $v0, 1
+	06C : 10400005; -- 	beq		$v0, $zero, _IF_2
+	06D : 00000000; -- 	nop
+	06E : 080000AB; -- 	j		_FOR_END_0
+	06F : 00000000; -- 	nop
+	070 : 08000072; -- 	j		_IF_END_1
+	071 : 00000000; -- 	nop
+	072 : 20000000; -- 	addi		$t1, 0
+	073 : 8FC2FFE4; -- 	lw		$v0, -28($fp)
+	074 : 3C0AFFFF; -- 	lui		$t2, 65535
+	075 : 354AFFFF; -- 	ori		$t2, $t2, 65535
+	076 : 012A0018; -- 	mult	$t1, $t2
+	077 : 00004812; -- 	mflo	$t1
+	078 : 01224820; -- 	add		$t1, $t1, $v0
+	079 : 8FC20008; -- 	lw		$v0, 8($fp)
+	07A : 00094880; -- 	sll		$t1, $t1, 2
+	07B : 00491020; -- 	add		$v0, $v0, $t1
+	07C : 8C420000; -- 	lw		$v0, 0($v0)
+	07D : 00000000; -- 	nop
+	07E : AFC2FFDC; -- 	sw		$v0, -36($fp)
+	07F : 20000000; -- 	addi		$t0, 0
+	080 : 8FC2FFE4; -- 	lw		$v0, -28($fp)
+	081 : 3C09FFFF; -- 	lui		$t1, 65535
+	082 : 3529FFFF; -- 	ori		$t1, $t1, 65535
+	083 : 01090018; -- 	mult	$t0, $t1
+	084 : 00004012; -- 	mflo	$t0
+	085 : 01024020; -- 	add		$t0, $t0, $v0
+	086 : 8FC20008; -- 	lw		$v0, 8($fp)
+	087 : 00084080; -- 	sll		$t0, $t0, 2
+	088 : 00481020; -- 	add		$v0, $v0, $t0
+	089 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	08A : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	08B : 20000000; -- 	addi		$t1, 0
+	08C : 8FC2FFE0; -- 	lw		$v0, -32($fp)
+	08D : 3C0AFFFF; -- 	lui		$t2, 65535
+	08E : 354AFFFF; -- 	ori		$t2, $t2, 65535
+	08F : 012A0018; -- 	mult	$t1, $t2
+	090 : 00004812; -- 	mflo	$t1
+	091 : 01224820; -- 	add		$t1, $t1, $v0
+	092 : 8FC20008; -- 	lw		$v0, 8($fp)
+	093 : 00094880; -- 	sll		$t1, $t1, 2
+	094 : 00491020; -- 	add		$v0, $v0, $t1
+	095 : 8C420000; -- 	lw		$v0, 0($v0)
+	096 : 8FA80000; -- 	lw		$t0, 0($sp)
+	097 : 23BD0004; -- 	addi	$sp, $sp, 4
+	098 : AD020000; -- 	sw		$v0, 0($t0)
+	099 : 20000000; -- 	addi		$t0, 0
+	09A : 8FC2FFE0; -- 	lw		$v0, -32($fp)
+	09B : 3C09FFFF; -- 	lui		$t1, 65535
+	09C : 3529FFFF; -- 	ori		$t1, $t1, 65535
+	09D : 01090018; -- 	mult	$t0, $t1
+	09E : 00004012; -- 	mflo	$t0
+	09F : 01024020; -- 	add		$t0, $t0, $v0
+	0A0 : 8FC20008; -- 	lw		$v0, 8($fp)
+	0A1 : 00084080; -- 	sll		$t0, $t0, 2
+	0A2 : 00481020; -- 	add		$v0, $v0, $t0
+	0A3 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	0A4 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0A5 : 8FC2FFDC; -- 	lw		$v0, -36($fp)
+	0A6 : 8FA80000; -- 	lw		$t0, 0($sp)
+	0A7 : 23BD0004; -- 	addi	$sp, $sp, 4
+	0A8 : AD020000; -- 	sw		$v0, 0($t0)
+	0A9 : 0800002F; -- 	j		_FOR_0
+	0AA : 00000000; -- 	nop
+	0AB : 20000000; -- 	addi		$t1, 0
+	0AC : 8FC2FFE4; -- 	lw		$v0, -28($fp)
+	0AD : 3C0AFFFF; -- 	lui		$t2, 65535
+	0AE : 354AFFFF; -- 	ori		$t2, $t2, 65535
+	0AF : 012A0018; -- 	mult	$t1, $t2
+	0B0 : 00004812; -- 	mflo	$t1
+	0B1 : 01224820; -- 	add		$t1, $t1, $v0
+	0B2 : 8FC20008; -- 	lw		$v0, 8($fp)
+	0B3 : 00094880; -- 	sll		$t1, $t1, 2
+	0B4 : 00491020; -- 	add		$v0, $v0, $t1
+	0B5 : 8C420000; -- 	lw		$v0, 0($v0)
+	0B6 : 00000000; -- 	nop
+	0B7 : AFC2FFDC; -- 	sw		$v0, -36($fp)
+	0B8 : 20000000; -- 	addi		$t0, 0
+	0B9 : 8FC2FFE4; -- 	lw		$v0, -28($fp)
+	0BA : 3C09FFFF; -- 	lui		$t1, 65535
+	0BB : 3529FFFF; -- 	ori		$t1, $t1, 65535
+	0BC : 01090018; -- 	mult	$t0, $t1
+	0BD : 00004012; -- 	mflo	$t0
+	0BE : 01024020; -- 	add		$t0, $t0, $v0
+	0BF : 8FC20008; -- 	lw		$v0, 8($fp)
+	0C0 : 00084080; -- 	sll		$t0, $t0, 2
+	0C1 : 00481020; -- 	add		$v0, $v0, $t0
+	0C2 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	0C3 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0C4 : 20000000; -- 	addi		$t1, 0
+	0C5 : 8FC20010; -- 	lw		$v0, 16($fp)
+	0C6 : 3C0AFFFF; -- 	lui		$t2, 65535
+	0C7 : 354AFFFF; -- 	ori		$t2, $t2, 65535
+	0C8 : 012A0018; -- 	mult	$t1, $t2
+	0C9 : 00004812; -- 	mflo	$t1
+	0CA : 01224820; -- 	add		$t1, $t1, $v0
+	0CB : 8FC20008; -- 	lw		$v0, 8($fp)
+	0CC : 00094880; -- 	sll		$t1, $t1, 2
+	0CD : 00491020; -- 	add		$v0, $v0, $t1
+	0CE : 8C420000; -- 	lw		$v0, 0($v0)
+	0CF : 8FA80000; -- 	lw		$t0, 0($sp)
+	0D0 : 23BD0004; -- 	addi	$sp, $sp, 4
+	0D1 : AD020000; -- 	sw		$v0, 0($t0)
+	0D2 : 20000000; -- 	addi		$t0, 0
+	0D3 : 8FC20010; -- 	lw		$v0, 16($fp)
+	0D4 : 3C09FFFF; -- 	lui		$t1, 65535
+	0D5 : 3529FFFF; -- 	ori		$t1, $t1, 65535
+	0D6 : 01090018; -- 	mult	$t0, $t1
+	0D7 : 00004012; -- 	mflo	$t0
+	0D8 : 01024020; -- 	add		$t0, $t0, $v0
+	0D9 : 8FC20008; -- 	lw		$v0, 8($fp)
+	0DA : 00084080; -- 	sll		$t0, $t0, 2
+	0DB : 00481020; -- 	add		$v0, $v0, $t0
+	0DC : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	0DD : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0DE : 8FC2FFDC; -- 	lw		$v0, -36($fp)
+	0DF : 8FA80000; -- 	lw		$t0, 0($sp)
+	0E0 : 23BD0004; -- 	addi	$sp, $sp, 4
+	0E1 : AD020000; -- 	sw		$v0, 0($t0)
+	0E2 : 8FC2FFE4; -- 	lw		$v0, -28($fp)
+	0E3 : 00000000; -- 	nop
+	0E4 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	0E5 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0E6 : 3C020000; -- 	lui		$v0, 0
+	0E7 : 34420001; -- 	ori		$v0, $v0, 1
+	0E8 : 8FA80000; -- 	lw		$t0, 0($sp)
+	0E9 : 23BD0004; -- 	addi	$sp, $sp, 4
+	0EA : 01021022; -- 	sub		$v0, $t0, $v0	# SUB_AST
+	0EB : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0EC : AFA20000; -- 	sw		$v0, 0($sp)
+	0ED : 8FC2000C; -- 	lw		$v0, 12($fp)
+	0EE : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0EF : AFA20000; -- 	sw		$v0, 0($sp)
+	0F0 : 8FC20008; -- 	lw		$v0, 8($fp)
+	0F1 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0F2 : AFA20000; -- 	sw		$v0, 0($sp)
+	0F3 : 0C000006; -- 	jal		quicksort
+	0F4 : 00000000; -- 	nop
+	0F5 : 23BD000C; -- 	addi	$sp, $sp, 12
+	0F6 : 8FC20010; -- 	lw		$v0, 16($fp)
+	0F7 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0F8 : AFA20000; -- 	sw		$v0, 0($sp)
+	0F9 : 8FC2FFE4; -- 	lw		$v0, -28($fp)
+	0FA : 00000000; -- 	nop
+	0FB : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	0FC : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	0FD : 3C020000; -- 	lui		$v0, 0
+	0FE : 34420001; -- 	ori		$v0, $v0, 1
+	0FF : 8FA80000; -- 	lw		$t0, 0($sp)
+	100 : 23BD0004; -- 	addi	$sp, $sp, 4
+	101 : 01021020; -- 	add		$v0, $t0, $v0	# ADD_AST
+	102 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	103 : AFA20000; -- 	sw		$v0, 0($sp)
+	104 : 8FC20008; -- 	lw		$v0, 8($fp)
+	105 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	106 : AFA20000; -- 	sw		$v0, 0($sp)
+	107 : 0C000006; -- 	jal		quicksort
+	108 : 00000000; -- 	nop
+	109 : 23BD000C; -- 	addi	$sp, $sp, 12
+	10A : 0800010C; -- 	j		_IF_END_0
+	10B : 00000000; -- 	nop
+	10C : 23BD0028; -- 	addi	$sp, $sp, 40
+	10D : 8FBF0000; -- 	lw		$ra, 0($sp)	# Call $ra
+	10E : 8FBE0004; -- 	lw		$fp, 4($sp)	# Call $fp
+	10F : 23BD0008; -- 	addi	$sp, $sp, 8	# Colling convention
+	110 : 03E00008; -- 	jr		$ra
+	111 : 00000000; -- 	nop
+	112 : 23BDFFF8; -- 	addi	$sp, $sp, -8	# Colling convention
+	113 : AFBF0000; -- 	sw		$ra, 0($sp)	# Saving $ra
+	114 : AFBE0004; -- 	sw		$fp, 4($sp)	# Saving $fp
+	115 : 23BE0000; -- 	addi	$fp, $sp, 0
+	116 : 23BDFFD8; -- 	addi	$sp, $sp, -40	# allocate local variables
+	117 : 20000000; -- 	addi		$t0, 0
+	118 : 3C020000; -- 	lui		$v0, 0
+	119 : 34420000; -- 	ori		$v0, $v0, 0
+	11A : 3C090000; -- 	lui		$t1, 0
+	11B : 3529000A; -- 	ori		$t1, $t1, 10
+	11C : 01090018; -- 	mult	$t0, $t1
+	11D : 00004012; -- 	mflo	$t0
+	11E : 01024020; -- 	add		$t0, $t0, $v0
+	11F : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	120 : 00084080; -- 	sll		$t0, $t0, 2
+	121 : 00481020; -- 	add		$v0, $v0, $t0
+	122 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	123 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	124 : 3C020000; -- 	lui		$v0, 0
+	125 : 3442000A; -- 	ori		$v0, $v0, 10
+	126 : 8FA80000; -- 	lw		$t0, 0($sp)
+	127 : 23BD0004; -- 	addi	$sp, $sp, 4
+	128 : AD020000; -- 	sw		$v0, 0($t0)
+	129 : 20000000; -- 	addi		$t0, 0
+	12A : 3C020000; -- 	lui		$v0, 0
+	12B : 34420001; -- 	ori		$v0, $v0, 1
+	12C : 3C090000; -- 	lui		$t1, 0
+	12D : 3529000A; -- 	ori		$t1, $t1, 10
+	12E : 01090018; -- 	mult	$t0, $t1
+	12F : 00004012; -- 	mflo	$t0
+	130 : 01024020; -- 	add		$t0, $t0, $v0
+	131 : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	132 : 00084080; -- 	sll		$t0, $t0, 2
+	133 : 00481020; -- 	add		$v0, $v0, $t0
+	134 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	135 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	136 : 3C020000; -- 	lui		$v0, 0
+	137 : 34420004; -- 	ori		$v0, $v0, 4
+	138 : 8FA80000; -- 	lw		$t0, 0($sp)
+	139 : 23BD0004; -- 	addi	$sp, $sp, 4
+	13A : AD020000; -- 	sw		$v0, 0($t0)
+	13B : 20000000; -- 	addi		$t0, 0
+	13C : 3C020000; -- 	lui		$v0, 0
+	13D : 34420002; -- 	ori		$v0, $v0, 2
+	13E : 3C090000; -- 	lui		$t1, 0
+	13F : 3529000A; -- 	ori		$t1, $t1, 10
+	140 : 01090018; -- 	mult	$t0, $t1
+	141 : 00004012; -- 	mflo	$t0
+	142 : 01024020; -- 	add		$t0, $t0, $v0
+	143 : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	144 : 00084080; -- 	sll		$t0, $t0, 2
+	145 : 00481020; -- 	add		$v0, $v0, $t0
+	146 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	147 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	148 : 3C020000; -- 	lui		$v0, 0
+	149 : 34420002; -- 	ori		$v0, $v0, 2
+	14A : 8FA80000; -- 	lw		$t0, 0($sp)
+	14B : 23BD0004; -- 	addi	$sp, $sp, 4
+	14C : AD020000; -- 	sw		$v0, 0($t0)
+	14D : 20000000; -- 	addi		$t0, 0
+	14E : 3C020000; -- 	lui		$v0, 0
+	14F : 34420003; -- 	ori		$v0, $v0, 3
+	150 : 3C090000; -- 	lui		$t1, 0
+	151 : 3529000A; -- 	ori		$t1, $t1, 10
+	152 : 01090018; -- 	mult	$t0, $t1
+	153 : 00004012; -- 	mflo	$t0
+	154 : 01024020; -- 	add		$t0, $t0, $v0
+	155 : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	156 : 00084080; -- 	sll		$t0, $t0, 2
+	157 : 00481020; -- 	add		$v0, $v0, $t0
+	158 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	159 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	15A : 3C020000; -- 	lui		$v0, 0
+	15B : 34420007; -- 	ori		$v0, $v0, 7
+	15C : 8FA80000; -- 	lw		$t0, 0($sp)
+	15D : 23BD0004; -- 	addi	$sp, $sp, 4
+	15E : AD020000; -- 	sw		$v0, 0($t0)
+	15F : 20000000; -- 	addi		$t0, 0
+	160 : 3C020000; -- 	lui		$v0, 0
+	161 : 34420004; -- 	ori		$v0, $v0, 4
+	162 : 3C090000; -- 	lui		$t1, 0
+	163 : 3529000A; -- 	ori		$t1, $t1, 10
+	164 : 01090018; -- 	mult	$t0, $t1
+	165 : 00004012; -- 	mflo	$t0
+	166 : 01024020; -- 	add		$t0, $t0, $v0
+	167 : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	168 : 00084080; -- 	sll		$t0, $t0, 2
+	169 : 00481020; -- 	add		$v0, $v0, $t0
+	16A : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	16B : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	16C : 3C020000; -- 	lui		$v0, 0
+	16D : 34420003; -- 	ori		$v0, $v0, 3
+	16E : 8FA80000; -- 	lw		$t0, 0($sp)
+	16F : 23BD0004; -- 	addi	$sp, $sp, 4
+	170 : AD020000; -- 	sw		$v0, 0($t0)
+	171 : 20000000; -- 	addi		$t0, 0
+	172 : 3C020000; -- 	lui		$v0, 0
+	173 : 34420005; -- 	ori		$v0, $v0, 5
+	174 : 3C090000; -- 	lui		$t1, 0
+	175 : 3529000A; -- 	ori		$t1, $t1, 10
+	176 : 01090018; -- 	mult	$t0, $t1
+	177 : 00004012; -- 	mflo	$t0
+	178 : 01024020; -- 	add		$t0, $t0, $v0
+	179 : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	17A : 00084080; -- 	sll		$t0, $t0, 2
+	17B : 00481020; -- 	add		$v0, $v0, $t0
+	17C : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	17D : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	17E : 3C020000; -- 	lui		$v0, 0
+	17F : 34420005; -- 	ori		$v0, $v0, 5
+	180 : 8FA80000; -- 	lw		$t0, 0($sp)
+	181 : 23BD0004; -- 	addi	$sp, $sp, 4
+	182 : AD020000; -- 	sw		$v0, 0($t0)
+	183 : 20000000; -- 	addi		$t0, 0
+	184 : 3C020000; -- 	lui		$v0, 0
+	185 : 34420006; -- 	ori		$v0, $v0, 6
+	186 : 3C090000; -- 	lui		$t1, 0
+	187 : 3529000A; -- 	ori		$t1, $t1, 10
+	188 : 01090018; -- 	mult	$t0, $t1
+	189 : 00004012; -- 	mflo	$t0
+	18A : 01024020; -- 	add		$t0, $t0, $v0
+	18B : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	18C : 00084080; -- 	sll		$t0, $t0, 2
+	18D : 00481020; -- 	add		$v0, $v0, $t0
+	18E : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	18F : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	190 : 3C020000; -- 	lui		$v0, 0
+	191 : 34420009; -- 	ori		$v0, $v0, 9
+	192 : 8FA80000; -- 	lw		$t0, 0($sp)
+	193 : 23BD0004; -- 	addi	$sp, $sp, 4
+	194 : AD020000; -- 	sw		$v0, 0($t0)
+	195 : 20000000; -- 	addi		$t0, 0
+	196 : 3C020000; -- 	lui		$v0, 0
+	197 : 34420007; -- 	ori		$v0, $v0, 7
+	198 : 3C090000; -- 	lui		$t1, 0
+	199 : 3529000A; -- 	ori		$t1, $t1, 10
+	19A : 01090018; -- 	mult	$t0, $t1
+	19B : 00004012; -- 	mflo	$t0
+	19C : 01024020; -- 	add		$t0, $t0, $v0
+	19D : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	19E : 00084080; -- 	sll		$t0, $t0, 2
+	19F : 00481020; -- 	add		$v0, $v0, $t0
+	1A0 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	1A1 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	1A2 : 3C020000; -- 	lui		$v0, 0
+	1A3 : 3442000A; -- 	ori		$v0, $v0, 10
+	1A4 : 8FA80000; -- 	lw		$t0, 0($sp)
+	1A5 : 23BD0004; -- 	addi	$sp, $sp, 4
+	1A6 : AD020000; -- 	sw		$v0, 0($t0)
+	1A7 : 20000000; -- 	addi		$t0, 0
+	1A8 : 3C020000; -- 	lui		$v0, 0
+	1A9 : 34420008; -- 	ori		$v0, $v0, 8
+	1AA : 3C090000; -- 	lui		$t1, 0
+	1AB : 3529000A; -- 	ori		$t1, $t1, 10
+	1AC : 01090018; -- 	mult	$t0, $t1
+	1AD : 00004012; -- 	mflo	$t0
+	1AE : 01024020; -- 	add		$t0, $t0, $v0
+	1AF : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	1B0 : 00084080; -- 	sll		$t0, $t0, 2
+	1B1 : 00481020; -- 	add		$v0, $v0, $t0
+	1B2 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	1B3 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	1B4 : 3C020000; -- 	lui		$v0, 0
+	1B5 : 34420001; -- 	ori		$v0, $v0, 1
+	1B6 : 8FA80000; -- 	lw		$t0, 0($sp)
+	1B7 : 23BD0004; -- 	addi	$sp, $sp, 4
+	1B8 : AD020000; -- 	sw		$v0, 0($t0)
+	1B9 : 20000000; -- 	addi		$t0, 0
+	1BA : 3C020000; -- 	lui		$v0, 0
+	1BB : 34420009; -- 	ori		$v0, $v0, 9
+	1BC : 3C090000; -- 	lui		$t1, 0
+	1BD : 3529000A; -- 	ori		$t1, $t1, 10
+	1BE : 01090018; -- 	mult	$t0, $t1
+	1BF : 00004012; -- 	mflo	$t0
+	1C0 : 01024020; -- 	add		$t0, $t0, $v0
+	1C1 : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	1C2 : 00084080; -- 	sll		$t0, $t0, 2
+	1C3 : 00481020; -- 	add		$v0, $v0, $t0
+	1C4 : AFA2FFFC; -- 	sw		$v0, -4($sp)
+	1C5 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	1C6 : 3C020000; -- 	lui		$v0, 0
+	1C7 : 34420008; -- 	ori		$v0, $v0, 8
+	1C8 : 8FA80000; -- 	lw		$t0, 0($sp)
+	1C9 : 23BD0004; -- 	addi	$sp, $sp, 4
+	1CA : AD020000; -- 	sw		$v0, 0($t0)
+	1CB : 3C020000; -- 	lui		$v0, 0
+	1CC : 34420009; -- 	ori		$v0, $v0, 9
+	1CD : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	1CE : AFA20000; -- 	sw		$v0, 0($sp)
+	1CF : 3C020000; -- 	lui		$v0, 0
+	1D0 : 34420000; -- 	ori		$v0, $v0, 0
+	1D1 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	1D2 : AFA20000; -- 	sw		$v0, 0($sp)
+	1D3 : 23C2FFD8; -- 	addi	$v0, $fp, -40
+	1D4 : 23BDFFFC; -- 	addi	$sp, $sp, -4
+	1D5 : AFA20000; -- 	sw		$v0, 0($sp)
+	1D6 : 0C000006; -- 	jal		quicksort
+	1D7 : 00000000; -- 	nop
+	1D8 : 23BD000C; -- 	addi	$sp, $sp, 12
+	1D9 : 8FC8FFFC; -- 	lw		$t0, -4($fp)	# data[0]
+	1DA : 8FC9FFF8; -- 	lw		$t1, -8($fp)	# data[1]
+	1DB : 8FCAFFF4; -- 	lw		$t2, -12($fp)	# data[2]
+	1DC : 8FCBFFF0; -- 	lw		$t3, -16($fp)	# data[3]
+	1DD : 8FCCFFEC; -- 	lw		$t4, -20($fp)	# data[4]
+	1DE : 8FCDFFE8; -- 	lw		$t5, -24($fp)	# data[5]
+	1DF : 8FCEFFE4; -- 	lw		$t6, -28($fp)	# data[6]
+	1E0 : 8FCFFFE0; -- 	lw		$t7, -32($fp)	# data[7]
+	1E1 : 8FD0FFDC; -- 	lw		$s0, -36($fp)	# data[8]
+	1E2 : 8FD1FFD8; -- 	lw		$s1, -40($fp)	# data[9]
+	1E3 : 23BD0028; -- 	addi	$sp, $sp, 40
+	1E4 : 8FBF0000; -- 	lw		$ra, 0($sp)	# Call $ra
+	1E5 : 8FBE0004; -- 	lw		$fp, 4($sp)	# Call $fp
+	1E6 : 23BD0008; -- 	addi	$sp, $sp, 8	# Colling convention
+	1E7 : 03E00008; -- 	jr		$ra
+	1E8 : 00000000; -- 	nop
+	[1E9..3FF] : 00000000;
 END;

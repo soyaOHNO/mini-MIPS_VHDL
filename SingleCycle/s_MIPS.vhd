@@ -82,8 +82,11 @@ architecture behavior of s_MIPS is
 	signal Print_PC	: std_logic_vector(15 downto 0);
 	signal dummy_HEX	: std_logic_vector(6 downto 0);
 	-- 自動実行用のカウンタとパルス信号
-	signal counter		: integer range 0 to 4999999 := 0;
-	signal auto_pulse	: std_logic;
+	signal counter1	: integer range 0 to 4999999 := 0;
+	signal auto_pulse1: std_logic;
+	signal counter2	: integer range 0 to 1 := 0;
+	signal auto_pulse2: std_logic;
+	signal clk_flag	: std_logic_vector(1 downto 0);
 
 	component PC port
 	(
@@ -233,17 +236,26 @@ begin
 			key_sync2 <= key_sync1;
 			
 			-- 【自動用】5,000,000進カウンタ (50MHzクロックで0.1秒周期)
-			if counter = 4999999 then
-				counter <= 0;
-				auto_pulse <= '1'; -- 1クロック分だけパルスを立てる
+			if counter1 = 4999999 then
+				counter1 <= 0;
+				auto_pulse1 <= '1'; -- 1クロック分だけパルスを立てる
 			else
-				counter <= counter + 1;
-				auto_pulse <= '0';
+				counter1 <= counter1 + 1;
+				auto_pulse1 <= '0';
+			end if;
+			-- 【自動用】2進カウンタ
+			if counter2 = 1 then
+				counter2 <= 0;
+				auto_pulse2 <= '1'; -- 1クロック分だけパルスを立てる
+			else
+				counter2 <= counter2 + 1;
+				auto_pulse2 <= '0';
 			end if;
 		end if;
 	end process;
 	-- SW(6) が '0' の時は自動パルス、'1' の時は手動パルスを P_CLK に接続
-	P_CLK <= auto_pulse when SW(6) = '1' else (key_sync1 and (not key_sync2));
+	clk_flag <= SW(7) & SW(6);
+	with clk_flag select P_CLK <= auto_pulse1 when "01", auto_pulse2 when "10", (key_sync1 and (not key_sync2)) when others;
 
 	process(CLK)
 	begin
