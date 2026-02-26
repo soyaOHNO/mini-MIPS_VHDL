@@ -25,7 +25,7 @@
 
 ### 1. リポジトリのクローン
 ```bash
-git clone [https://github.com/soyaOHNO/mini-MIPS_VHDL.git](https://github.com/soyaOHNO/mini-MIPS_VHDL.git)
+git clone https://github.com/soyaOHNO/mini-MIPS_VHDL.git
 cd mini-MIPS_VHDL
 ```
 
