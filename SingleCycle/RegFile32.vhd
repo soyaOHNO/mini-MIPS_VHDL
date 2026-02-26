@@ -6,7 +6,6 @@ use IEEE.numeric_std.all;
 entity RegFile32 is port
 (
 	CLK		: in std_logic;
-	P_CLK		: in std_logic;
 	RegWrite	: in std_logic;
 	w_addr	: in std_logic_vector(4 downto 0);
 	w_data	: in std_logic_vector(31 downto 0);
@@ -24,9 +23,9 @@ type reg_array is
 	array (0 to 31) of std_logic_vector(31 downto 0);
 signal regs : reg_array:= (others => (others => '0'));
 begin
-	process(CLK, P_CLK)
+	process(CLK)
 	begin
-		if (CLK'event and CLK = '1') and (P_CLK = '1') then
+		if (CLK'event and CLK = '1') then
 			if RegWrite = '1' then
 				if w_addr /= "00000" then
 					regs(to_integer(unsigned(w_addr))) <= w_data;

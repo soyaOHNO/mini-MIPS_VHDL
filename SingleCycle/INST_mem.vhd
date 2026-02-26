@@ -4,7 +4,6 @@ use IEEE.std_logic_1164.all;
 entity INST_mem is port
 (
 	CLK	: in std_logic;
-	P_CLK	: in std_logic;
 	ADDR	: in std_logic_vector(31 downto 0);
 	INSTR	: out std_logic_vector(31 downto 0)
 );

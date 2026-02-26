@@ -5,7 +5,6 @@ use IEEE.numeric_std.all;
 entity DataMem is port
 (
 	CLK			: in std_logic;
-	P_CLK			: in std_logic;
 	MemWrite  	: in std_logic;
 	Address   	: in std_logic_vector(31 downto 0);
 	WriteData 	: in std_logic_vector(31 downto 0);
@@ -35,26 +34,24 @@ begin
 		variable temp_data : std_logic_vector(31 downto 0);
 	begin
 		if (CLK'event and CLK = '1') then
-			if (P_CLK = '1') then
-				if MemWrite = '1' then
-					if MemByte = '1' then
-						-- sbの場合：現在の32bitデータを一度読み出し、8bitだけ書き換える (Read-Modify-Write)
-						temp_data := RAM(addr_index);
-						
-						case Address(1 downto 0) is
-							when "00" => temp_data(7 downto 0)   := WriteData(7 downto 0);
-							when "01" => temp_data(15 downto 8)  := WriteData(7 downto 0);
-							when "10" => temp_data(23 downto 16) := WriteData(7 downto 0);
-							when "11" => temp_data(31 downto 24) := WriteData(7 downto 0);
-							when others => null;
-						end case;
-						
-						-- 修正した32bitデータを丸ごとRAMに書き戻す
-						RAM(addr_index) <= temp_data;
-					else
-						-- sw (Store Word) の場合：32ビット丸ごと書き換える
-						RAM(addr_index) <= WriteData;
-					end if;
+			if MemWrite = '1' then
+				if MemByte = '1' then
+					-- sbの場合：現在の32bitデータを一度読み出し、8bitだけ書き換える (Read-Modify-Write)
+					temp_data := RAM(addr_index);
+					
+					case Address(1 downto 0) is
+						when "00" => temp_data(7 downto 0)   := WriteData(7 downto 0);
+						when "01" => temp_data(15 downto 8)  := WriteData(7 downto 0);
+						when "10" => temp_data(23 downto 16) := WriteData(7 downto 0);
+						when "11" => temp_data(31 downto 24) := WriteData(7 downto 0);
+						when others => null;
+					end case;
+					
+					-- 修正した32bitデータを丸ごとRAMに書き戻す
+					RAM(addr_index) <= temp_data;
+				else
+					-- sw (Store Word) の場合：32ビット丸ごと書き換える
+					RAM(addr_index) <= WriteData;
 				end if;
 			end if;
 		end if;

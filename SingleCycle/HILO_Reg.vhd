@@ -5,7 +5,7 @@ use IEEE.std_logic_arith.all;
 
 entity HILO_Reg is port
 (
-	P_CLK			: in std_logic;
+	CLK			: in std_logic;
 	A				: in std_logic_vector(31 downto 0);
 	B				: in std_logic_vector(31 downto 0);
 	MULT			: in std_logic;
@@ -21,10 +21,10 @@ architecture behavior of HILO_Reg is
 	signal HI_data : std_logic_vector(31 downto 0);
 	signal LO_data : std_logic_vector(31 downto 0);
 begin
-	process(P_CLK, HiLoWrite)
+	process(CLK, HiLoWrite)
 	begin
-		if P_CLK'event and P_CLK = '1' then
-			if (MULT = '1' or DIV = '1') and (HiLoWrite = '0') then
+		if (CLK'event and CLK = '1') then
+			if (MULT = '1' or DIV = '1') and (HiLoWrite = '1') then
 					HI_data <= A;
 					LO_data <= B;
 			end if;

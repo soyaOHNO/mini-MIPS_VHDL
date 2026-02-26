@@ -84,7 +84,7 @@ architecture behavior of s_MIPS is
 	-- 自動実行用のカウンタとパルス信号
 	signal counter1	: integer range 0 to 4999999 := 0;
 	signal auto_pulse1: std_logic;
-	signal counter2	: integer range 0 to 1 := 0;
+	signal counter2	: integer range 0 to 50 := 0;
 	signal auto_pulse2: std_logic;
 	signal clk_flag	: std_logic_vector(1 downto 0);
 
@@ -92,7 +92,6 @@ architecture behavior of s_MIPS is
 	(
 		CLK		: in std_logic;
 		RST		: in std_logic;
-		P_CLK		: in std_logic;
 		PC_in		: in std_logic_vector(31 downto 0);
 		PC_out	: out std_logic_vector(31 downto 0)
 	);
@@ -108,7 +107,6 @@ architecture behavior of s_MIPS is
 	component INST_mem port
 	(
 		CLK	: in std_logic;
-		P_CLK	: in std_logic;
 		ADDR	: in std_logic_vector(31 downto 0);
 		INSTR	: out std_logic_vector(31 downto 0)
 	);
@@ -142,7 +140,6 @@ architecture behavior of s_MIPS is
 	component RegFile32 is port
 	(
 		CLK		: in std_logic;
-		P_CLK		: in std_logic;
 		RegWrite	: in std_logic;
 		w_addr	: in std_logic_vector(4 downto 0);
 		w_data	: in std_logic_vector(31 downto 0);
@@ -188,7 +185,6 @@ architecture behavior of s_MIPS is
 	component DataMem port
 	(
 		CLK		: in std_logic;
-		P_CLK		: in std_logic;
 		MemWrite	: in std_logic;
 		Address	: in std_logic_vector(31 downto 0);
 		WriteData: in std_logic_vector(31 downto 0);
@@ -213,7 +209,7 @@ architecture behavior of s_MIPS is
 
 	component HILO_Reg is port
 	(
-		P_CLK			: in std_logic;
+		CLK			: in std_logic;
 		A				: in std_logic_vector(31 downto 0);
 		B				: in std_logic_vector(31 downto 0);
 		MULT			: in std_logic;
@@ -243,8 +239,8 @@ begin
 				counter1 <= counter1 + 1;
 				auto_pulse1 <= '0';
 			end if;
-			-- 【自動用】2進カウンタ
-			if counter2 = 1 then
+			-- 【自動用】n進カウンタ
+			if counter2 = 50 then
 				counter2 <= 0;
 				auto_pulse2 <= '1'; -- 1クロック分だけパルスを立てる
 			else
@@ -257,22 +253,22 @@ begin
 	clk_flag <= SW(7) & SW(6);
 	with clk_flag select P_CLK <= auto_pulse1 when "01", auto_pulse2 when "10", (key_sync1 and (not key_sync2)) when others;
 
-	process(CLK)
-	begin
-		if CLK'event and CLK = '1' then
-			rst_sync1 <= not KEY(1);
-			rst_sync2 <= rst_sync1;
-		end if;
-	end process;
-	RST <= rst_sync2;
+	-- process(CLK)
+	-- begin
+	-- 	if CLK'event and CLK = '1' then
+	-- 		rst_sync1 <= not KEY(1);
+	-- 		rst_sync2 <= rst_sync1;
+	-- 	end if;
+	-- end process;
+	RST <= not KEY(1);
 
-	U_PC				: PC port map(CLK => CLK, RST => RST, P_CLK => P_CLK, PC_in => PC_in, PC_out => PC_cur);
+	U_PC				: PC port map(CLK => P_CLK, RST => RST, PC_in => PC_in, PC_out => PC_cur);
 	U_PC_add			: PC_add port map(PC_cur => PC_cur, PC_next => PC_next);
-	U_INST_mem		: INST_mem port map(CLK => CLK, P_CLK => P_CLK, ADDR => PC_cur, INSTR => INST);
+	U_INST_mem		: INST_mem port map(CLK => not P_CLK, ADDR => PC_cur, INSTR => INST);
 	U_ControlUnit	: ControlUnit port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), RegDst => RegDst, RegWrite => RegWrite, ALUop => ALUop, AluSrc => AluSrc, MemWrite =>MemWrite, MemToReg => MemToReg, JUMP => JUMP, BRANCH => BRANCHc, JR => JRc, MULT => MULT, DIV => DIV, HI => HI, LO => LO, HiLoWrite => HiLoWrite, LUI => LUI, ImmSrc => ImmSrc, UnSign => UnSign, MemByte => MemByte);
 	with RegDst select w_addr <= INST(20 downto 16) when "00", INST(15 downto 11) when "01", "11111" when "10", (others => '0') when others;
 	oRegWrite <= '0' when Overflow = '1' else RegWrite;
-	U_RegFile32		: RegFile32 port map(CLK => CLK, P_CLK => P_CLK, RegWrite => oRegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
+	U_RegFile32		: RegFile32 port map(CLK => P_CLK, RegWrite => oRegWrite, w_addr => w_addr, w_data => w_data, r_addr1 => INST(25 downto 21), r_addr2 => INST(20 downto 16), r_data1 => PORT_A, r_data2 => PORT_B, DebugAddr => DebugAddr, DebugData => DebugData);
 	U_AluControl	: AluControl port map(OPECODE => INST(31 downto 26), FUNCT => INST(5 downto 0), ALUop => ALUop, ALUcontrols => ALUcontrols);
 	process(INST, ImmSrc)
 	begin
@@ -288,10 +284,10 @@ begin
 	ALU_B <= PORT_B when AluSrc = '0' else EXPaddr;
 	U_CALC_MUDI		: CALC_MUDI port map(A => PORT_A, B => ALU_B, MULT => MULT, DIV => DIV, UnSign => UnSign, HI_out => HI_out, LO_out => LO_out, Overflow => MUDI_of, ZeroDiv => ZeroDiv);
 	ozHiLoWrite <= HiLoWrite and ((not MUDI_of) or (not ZeroDiv));
-	U_HILO_Reg		: HILO_Reg port map(P_CLK => P_CLK, A => HI_out, B => LO_out, MULT => MULT, DIV => DIV, HI => HI, LO => LO, HiLoWrite => ozHiLoWrite, MF_out => MF_out);
+	U_HILO_Reg		: HILO_Reg port map(CLK => P_CLK, A => HI_out, B => LO_out, MULT => MULT, DIV => DIV, HI => HI, LO => LO, HiLoWrite => ozHiLoWrite, MF_out => MF_out);
 	U_ALU32			: ALU32 port map(A => PORT_A, B => ALU_B, AluControl => AluControls, shamt => INST(10 downto 6), Result => Result, Zero => Zero, Overflow => ALU_of);
 	U_Branch			: Branch port map(BRANCHc => BRANCHc, INST26 => INST(26), ZERO => ZERO, BraCtrl => BraCtrl);
-	U_DataMem		: DataMem port map(CLK => CLK, P_CLK => P_CLK, MemWrite => MemWrite, Address => Result, WriteData => PORT_B, MemByte => MemByte, ReadData => ReadData);
+	U_DataMem		: DataMem port map(CLK => P_CLK, MemWrite => MemWrite, Address => Result, WriteData => PORT_B, MemByte => MemByte, ReadData => ReadData);
 	with MemToReg select m_data <= Result when "00", ReadData when "01", PC_next when "10", (others => '0') when others;
 	MF <= HI or LO;
 	with MF select l_data <= m_data when '0', MF_out when '1', (others => '0') when others;
