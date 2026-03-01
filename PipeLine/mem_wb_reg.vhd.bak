@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity ex_mem_reg is port
+entity mem_wb_reg is port
 (
 	P_CLK				: in std_logic;
 	RegWrite_ex		: in std_logic;
@@ -45,9 +45,9 @@ entity ex_mem_reg is port
 	PORT_B_mem		: out std_logic_vector(31 downto 0);
 	RD_addr_mem		: out std_logic_vector(4 downto 0)
 );
-end ex_mem_reg;
+end mem_wb_reg;
 
-architecture behavior of ex_mem_reg is
+architecture behavior of mem_wb_reg is
 begin
 	process(P_CLK)
 	begin

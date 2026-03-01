@@ -1,29 +1,32 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
 
-entity Inst_mem is port
+entity INST_mem is port
 (
-	clk     : in  std_logic;
-   addr    : in  std_logic_vector(31 downto 0);
-   instr   : out std_logic_vector(31 downto 0)
+	CLK	: in std_logic;
+	ADDR	: in std_logic_vector(31 downto 0);
+	INST	: out std_logic_vector(31 downto 0)
 );
-end Inst_mem;
+end INST_mem;
 
-architecture behavior of Inst_mem is
-type mem_type is array (0 to 255) of std_logic_vector(31 downto 0);
-signal memory : mem_type := (
-	0 => x"20080005",  -- 例: addi $t0, $zero, 5
-	1 => x"20090003",  -- 例: addi $t1, $zero, 3
-	2 => x"01095020",  -- 例: add $t2, $t0, $t1
-	others => (others => '0')
-);
+architecture behavior of INST_mem is
+
+	-- 1. 生成されたROMのコンポーネント宣言
+	component INST_rom is
+		port (
+			address : in  std_logic_vector(9 downto 0);
+			clock   : in  std_logic;
+			q       : out std_logic_vector(31 downto 0)
+		);
+	end component;
 
 begin
-	process(clk)
-	begin
-		if rising_edge(clk) then
-			instr <= memory(to_integer(unsigned(addr(9 downto 2))));
-		end if;
-	end process;
+
+	-- 2. ROMの呼び出しと信号の接続
+	U_ROM : INST_rom port map (
+		address => ADDR(11 downto 2), -- 32bitアドレスから必要な8bitを抽出
+		clock   => CLK,              -- 高速なシステムクロックを接続
+		q       => INST
+	);
+
 end behavior;

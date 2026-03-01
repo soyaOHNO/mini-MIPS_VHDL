@@ -1,0 +1,41 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity EX_stage is port
+(
+	CLK			: in std_logic;
+	PC_next_in	: in std_logic;
+	RegDst		: in std_logic_vector(1 downto 0);
+	RegWrite		: in std_logic;
+	ALUop			: in std_logic_vector(1 downto 0);
+	AluSrc		: in std_logic;
+	MemWrite		: in std_logic;
+	MemToReg		: in std_logic_vector(1 downto 0);
+	JUMP			: in std_logic;
+	BRANCH		: in std_logic;
+	JR				: in std_logic;
+	MULT			: in std_logic;
+	DIV			: in std_logic;
+	HI				: in std_logic;
+	LO				: in std_logic;
+	HiLoWrite	: in std_logic;
+	LUI			: in std_logic;
+	UnSign		: in std_logic;
+	MemByte		: in std_logic;
+	PC_next_out	: in std_logic;
+	PORT_A_data	: in std_logic_vector(31 downto 0);
+	PORT_B_data	: in std_logic_vector(31 downto 0);
+	opecode		: in std_logic_vector(5 downto 0);
+	immediate	: in std_logic_vector(31 downto 0);
+	RegDst0		: in std_logic_vector(4 downto 0);
+	RegDst1		: in std_logic_vector(4 downto 0);
+);
+end EX_stage;
+
+architecture behavior of ID_stage is
+
+
+
+begin
+
+end behavior;

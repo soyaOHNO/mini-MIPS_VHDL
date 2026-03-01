@@ -1,0 +1,64 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.std_logic_signed.all;
+use IEEE.std_logic_arith.all;
+
+entity MEM_stage is port
+(
+	CLK			: in std_logic;
+	PC_next_in	: in std_logic_vector(31 downto 0);
+	RegDst		: in std_logic_vector(1 downto 0);
+	RegWrite		: in std_logic;
+	ALUop			: in std_logic_vector(1 downto 0);
+	AluSrc		: in std_logic;
+	MemWrite		: in std_logic;
+	MemToReg		: in std_logic_vector(1 downto 0);
+	JUMP			: in std_logic;
+	BRANCH		: in std_logic;
+	JR				: in std_logic;
+	MULT			: in std_logic;
+	DIV			: in std_logic;
+	HI				: in std_logic;
+	LO				: in std_logic;
+	HiLoWrite	: in std_logic;
+	LUI			: in std_logic;
+	UnSign		: in std_logic;
+	MemByte		: in std_logic;
+	PORT_A_data	: in std_logic_vector(31 downto 0);
+	PORT_B_data	: in std_logic_vector(31 downto 0);
+	opecode		: in std_logic_vector(5 downto 0);
+	immediate	: in std_logic_vector(31 downto 0);
+	RegDst0		: in std_logic_vector(4 downto 0);
+	RegDst1		: in std_logic_vector(4 downto 0);
+	RegWrite		: out std_logic;
+	MemWrite		: out std_logic;
+	MemToReg		: out std_logic_vector(1 downto 0);
+	JUMP			: out std_logic;
+	BRANCH		: out std_logic;
+	JR				: out std_logic;
+	MULT			: out std_logic;
+	DIV			: out std_logic;
+	HI				: out std_logic;
+	LO				: out std_logic;
+	HiLoWrite	: out std_logic;
+	LUI			: out std_logic;
+	UnSign		: out std_logic;
+	MemByte		: out std_logic;
+	PC_next_out	: out std_logic_vector(31 downto 0);
+	Zero			: out std_logic;
+	ALU_of		: out std_logic;
+	ALU_out		: out std_logic_vector(31 downto 0);
+	PORT_B		: out std_logic_vector(31 downto 0);
+	RD_addr		: out std_logic_vector(4 downto 0);
+);
+end MEM_stage;
+
+architecture behavior of ID_stage is
+
+
+
+begin
+
+
+
+end behavior;
